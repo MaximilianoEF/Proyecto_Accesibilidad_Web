@@ -1624,14 +1624,18 @@ public class TestPAW {
         List<WebElement> metas = conexion.findElements(By.tagName("meta"));
         if(metas.size() != 0){
             for(WebElement meta: metas) {
-                if(meta.getAttribute("http-equiv").equals("refresh") && meta.getAttribute("content").indexOf("0;URL=") != -1){
-                    try {
-                        assertTrue(meta.getAttribute("http-equiv").equals("refresh"));
-                        assertFalse(meta.getAttribute("content").equals(""));
-                    } catch (Throwable t) {
-                        System.out.println(t);
+            	if(meta.getAttribute("http-equiv") != null && meta.getAttribute("content") != null) {
+            		if(meta.getAttribute("http-equiv").equals("refresh") && meta.getAttribute("content").indexOf("0;URL=") != -1){
+                        try {
+                            assertTrue(meta.getAttribute("http-equiv").equals("refresh"));
+                            assertFalse(meta.getAttribute("content").equals(""));
+                        } catch (Throwable t) {
+                            System.out.println(t);
+                        }
+                    } else {
+                        System.out.println("No se encontraron elementos con esta condicion, esta mal diseñado.");
                     }
-                } else {
+            	} else {
                     System.out.println("No se encontraron elementos con esta condicion, esta mal diseñado.");
                 }
             }
