@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button type="button" onclick="analizarAW();">Analizar AW</button>
+    <br><br>
+    <div id="anexo2"></div>
+    <script>
+        function analizarAW() {
+            //XMLHttpRequest: Permite realizar la comunicación con el servidor en segundo plano
+            let xmlhttp = new XMLHttpRequest();
+            //onreadystatechange: Para definir una función que será llamada automáticamente cada vez que cambie la propiedad readyState del objeto.
+            xmlhttp.onreadystatechange = function() {
+                //readyState: Representa el estado del intercambio de datos. Si es 4: COMPLETADO. Se ha recibido la información del servidor 
+                //status:  Indica el tipo de respuesta dada a la petición. Si es 200. Respuesta correcta.
+                if (this.readyState == 4 && this.status == 200) {
+                    procesarAnalisisAW(this);
+                }
+            };
+            //open: abre la conexion 1er el método, 2do. la url 
+            xmlhttp.open("GET", "http://localhost:8443/getAnalisisAW");
+            //send: enviar la petición al servidor.
+            xmlhttp.send();
+        }
+
+        function procesarAnalisisAW(xmlhttp) {
+            //responseText: Contiene la respuesta del servidor en forma de cadena de texto.
+            //JSON.parse: Convierte cadena formato JSON en arreglo
+            let json = JSON.parse(xmlhttp.responseText);
+            //Se construye la tabla formato texto.
+            var newTable = document.createElement("table");
+            
+            var row = document.createElement("tr");
+
+            var th1 = document.createElement("th");
+            //th1.createTextNode("name");
+            th1.innerHTML = "codigo";
+
+            var th2 = document.createElement("th");
+            //th1.createTextNode("currency_id");
+            th2.innerText = "descripcion";
+
+            var th3 = document.createElement("th");
+            //th1.createTextNode("currency_id");
+            th3.innerText = "resultado";
+
+            row.appendChild(th1);
+            row.appendChild(th2);
+            row.appendChild(th3);
+
+            newTable.appendChild(row);
+
+
+            //let table = "<tr><th>name</th><th>currency_id</th></tr>";
+            //for(i = 0; i < json.length; i++)
+            //    table += "<tr><td>" + json[i].name + "</td><td>" + json[i].currency_id + "</td></tr>";
+            //document.getElementById("paises").innerHTML = table;
+
+            for(i = 0; i < json.length; i++) {
+                var rowFor = document.createElement("tr");
+                var td1 =  document.createElement("td");
+                td1.innerHTML = json[i].codigo;
+                var td2 =  document.createElement("td");
+                td2.innerHTML = json[i].descripcion;
+
+                var td3 =  document.createElement("td");
+                td3.innerHTML = json[i].tecnicas[0].resultado;
+
+                rowFor.appendChild(td1);
+                rowFor.appendChild(td2);
+                rowFor.appendChild(td3);
+                newTable.appendChild(rowFor);
+                console.log(i);
+            }
+
+            var div = document.getElementById("anexo2");
+            div.appendChild(newTable);
+
+        }
+    </script>
+</body>
+</html>
