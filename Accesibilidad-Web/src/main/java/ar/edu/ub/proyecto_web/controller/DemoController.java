@@ -3,40 +3,30 @@ package ar.edu.ub.proyecto_web.controller;
 import java.util.Date;
 import java.util.LinkedList;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 
-import ar.edu.ub.proyecto_web.model.Alumno;
 import ar.edu.ub.proyecto_web.model.Criterio;
 import ar.edu.ub.proyecto_web.model.Pauta;
 import ar.edu.ub.proyecto_web.model.Principio;
 import ar.edu.ub.proyecto_web.model.Tecnica;
 
 @RestController
+@RequestMapping("/getAnalisisAW/")
 public class DemoController {
 
+	private String URL;
 	
-	@GetMapping()
-	public String getAPIDate() {
-		return new Date().toString();
-	}
-	
-	@GetMapping(path="/getAlumnos")
-	public String getAlumnosP3() {
-		LinkedList<Alumno> alumnos =  new LinkedList<Alumno>();
-		alumnos.add(new Alumno("Lautaro", 28));
-		alumnos.add(new Alumno("Victoria", 25));
-		alumnos.add(new Alumno("Cristian", 23));
-		Gson gson = new Gson();
-		return gson.toJson(alumnos);
-	}
-	
-	@GetMapping(path="/getAnalisisAW")
-	public String getResultadoAccesibilidadWeb(String url) {
+	@GetMapping
+	public String getResultadoAccesibilidadWeb() {
 		LinkedList<Principio> principios = new LinkedList<Principio>();
-
 		
 		Principio pr1 = new Principio("1", "Perceptibilidad");
 		Pauta pa11 = new Pauta("1.1", "Alternativas Textuales");
@@ -67,7 +57,7 @@ public class DemoController {
 		//Agrego Pauta a Principio 4
 		pr1.agregarPauta(pa14);
 		
-		pr1.ejecutarPautas(url);
+		pr1.ejecutarPautas(this.URL);
 		
 //		c111.ejecutarTecnicas(url);
 		
@@ -85,5 +75,12 @@ public class DemoController {
 		
 		
 	}
+	
+	@PostMapping
+    public ResponseEntity<String> getUrl(@RequestBody String url) {
+		this.URL = url;
+		System.out.println(this.URL);
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
 	
 }

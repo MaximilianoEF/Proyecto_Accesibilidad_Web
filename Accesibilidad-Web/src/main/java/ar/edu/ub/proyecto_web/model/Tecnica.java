@@ -13,7 +13,6 @@ public class Tecnica {
 	private String codigo; //H1
 	private String descripcion; //...
 	private ResultadoTecnica resultado;
-	private WebDriver driver;
 	
 	public Tecnica(String codigo, String descripcion) {
 		this.codigo = codigo;
@@ -21,10 +20,7 @@ public class Tecnica {
 	}
 	
 	public void ejecutar(String url, HelpersConnection conexion) {
-		//selenium verrr TestResult
-//		this.resultado = ResultadoTecnica.OK;
-//		this.resultado = this.h2();
-		conexion.getInstancia("https://output.jsbin.com/likewak");
+		conexion.getInstancia(url);
 		switch(this.codigo) {
 		case "H2":
 			this.resultado = this.h2(conexion);

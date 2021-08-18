@@ -10,8 +10,6 @@ public class Criterio {
 	
 	private String codigo;
 	private String descripcion;
-	private WebDriver driver;
-	
 	private List<Tecnica> tecnicas;
 	
 	
@@ -26,7 +24,6 @@ public class Criterio {
 	}
 	
 	public void ejecutarTecnicas(String url, HelpersConnection conexion) {
-//		HelpersConnection conexion = new HelpersConnection(this.driver);
 		for (Tecnica tecnica : tecnicas) 
 			tecnica.ejecutar(url, conexion);
 	}

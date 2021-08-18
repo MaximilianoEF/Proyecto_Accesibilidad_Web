@@ -25,7 +25,9 @@ public class Principio {
 	
 	public void ejecutarPautas(String url) {
 		HelpersConnection conexion = new HelpersConnection(this.driver);
-		for (Pauta pauta: pautas) 
+		for(Pauta pauta: pautas) {
 			pauta.ejecutarCriterio(url, conexion);
+		}
+		conexion.close();
 	}
 }

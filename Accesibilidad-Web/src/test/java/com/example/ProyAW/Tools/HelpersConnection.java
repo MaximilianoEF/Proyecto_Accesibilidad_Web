@@ -1,13 +1,11 @@
-package ar.edu.ub.proyecto_web.model;
+package com.example.ProyAW.Tools;
 
 import java.util.List;
 import org.openqa.selenium.By;
-//import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class HelpersConnection {
@@ -20,10 +18,8 @@ public class HelpersConnection {
 
     private void Connection(String url) {
         WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        driver = new ChromeDriver(options);
-        //driver.manage().window().setSize(new Dimension(0,0));
+		driver = new ChromeDriver();
+        driver.manage().window().setSize(new Dimension(0,0));
         driver.get(url);
     }
 
