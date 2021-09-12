@@ -1,4 +1,5 @@
 package ar.edu.ub.proyecto_web.model;
+
 import java.util.List;
 import org.openqa.selenium.By;
 //import org.openqa.selenium.WebDriver;
@@ -1294,36 +1295,315 @@ public class Tecnica {
     }
     
     public ResultadoTecnica h64(HelpersConnection conexion) {
-        //Uso del title atributo de los elementos frame y iframe
+    	//Uso del title atributo de los elementos frame y iframe
+    	//Procedimiento
+    	//- Verifique cada marco y elemento iframe en el código fuente HTML o XHTML para ver la presencia de un atributo de título.
+    	//- Compruebe que el atributo del título contiene texto que identifica el marco.
+    	List<WebElement> frames = conexion.findElements(By.tagName("frame"));
+    	List<WebElement> iframes = conexion.findElements(By.tagName("iframe"));
+    	if(frames.size() != 0 || iframes.size() != 0){
+    		if(frames.size() != 0 ) {
+    			for(WebElement frame : frames){
+    				try {
+    					if(frame.getAttribute("title").equals("")) {
+    						return ResultadoTecnica.FAIL;
+    					}
+    				} catch (Throwable t) {
+    					return ResultadoTecnica.ERROR;
+    				}
+    			}
+    		}
+    		if(iframes.size() != 0) {
+    			for(WebElement iframe : iframes){
+    				try {
+    					if(iframe.getAttribute("title").equals("")) {
+    						return ResultadoTecnica.FAIL;
+    					}
+    				} catch (Throwable t) {
+    					return ResultadoTecnica.ERROR;
+    				}
+    			}
+    		}
+    		return ResultadoTecnica.OK; 
+    	} else {
+    		return ResultadoTecnica.OK;
+    	}
+    }
+    
+    public ResultadoTecnica h65(HelpersConnection conexion) {
+    	//Usar el atributo de título para identificar controles de formulario cuando no se puede usar el elemento de etiqueta
+    	//Procedimiento
+    	//Identificar cada control de formulario que no esté asociado con un label elemento.
+    	//- Verifique que el control tenga un title atributo
+    	//- Compruebe que el title atributo identifica el propósito del control.
+    	List<WebElement> forms = conexion.findElements(By.xpath("//form"));
+    	String tipo_input[] = {"button","submit","cancel","reset","image","text","password","radio","checkbox"};
+    	if(forms.size() != 0){
+    		for(WebElement form : forms){
+    			List<WebElement> inputs = form.findElements(By.xpath("//input"));
+    			List<WebElement> buttons = form.findElements(By.xpath("//button"));
+    			List<WebElement> textareas = form.findElements(By.xpath("//textarea"));
+    			List<WebElement> selects = form.findElements(By.xpath("//select"));
+    			if(inputs.size() != 0){
+    				for(WebElement input : inputs){
+    					for(int i=0; i<tipo_input.length; i++){
+    						if(input.getAttribute("type").equals(tipo_input[i])){
+    							try {
+    								if(input.getAttribute("title").equals("")) {
+    									return ResultadoTecnica.FAIL;
+    								}
+    							} catch (Throwable t) {
+    								return ResultadoTecnica.ERROR;
+    							}
+    						}
+    					}
+    				}
+    			}                
+    			if(buttons.size() != 0){
+    				for(WebElement button : buttons){
+    					try {
+    						if(button.getAttribute("title").equals("")) {
+    							return ResultadoTecnica.FAIL;
+    						}
+    					} catch (Throwable t) {
+    						return ResultadoTecnica.ERROR;
+    					}
+    				}
+    			}
+    			if(textareas.size() != 0){
+    				for(WebElement textarea : textareas){
+    					try {
+    						if(textarea.getAttribute("title").equals("")) {
+    							return ResultadoTecnica.FAIL;
+    						}
+    					} catch (Throwable t) {
+    						return ResultadoTecnica.ERROR;
+    					}
+    				}
+    			} 
+    			if(selects.size() != 0){
+    				for(WebElement select : selects){
+    					try {
+    						if(select.getAttribute("title").equals("")) {
+    							return ResultadoTecnica.FAIL;
+    						}
+    					} catch (Throwable t) {
+    						return ResultadoTecnica.ERROR;
+    					}
+    				}
+    			}
+    		}
+    		return ResultadoTecnica.OK;
+    	} else {
+    		return ResultadoTecnica.OK;
+    	}        
+    }
+    
+    public ResultadoTecnica h67(HelpersConnection conexion) {
+    	//Uso de texto alternativo nulo y sin atributo de título en elementos img para imágenes que AT debería ignorar
+    	//Procedimiento
+    	//Para cada imagen que debe ignorarse:
+    	//- Compruebe que el titleatributo esté ausente o vacío.
+    	//- Verifique que el altatributo esté presente y vacío.
+    	List<WebElement> images = conexion.findElements(By.tagName("img"));
+    	if(images.size() != 0){
+    		for(WebElement image : images){
+    			try {
+    				if(!(image.getAttribute("title") == null && image.getAttribute("alt").equals(""))){
+    					return ResultadoTecnica.FAIL; 
+    				} if(!(image.getAttribute("title") != null && image.getAttribute("alt").equals(""))){
+    					return ResultadoTecnica.FAIL;
+    				}
+
+    			} catch(Throwable t) {
+    				return ResultadoTecnica.ERROR;
+    			}
+    		}
+    		return ResultadoTecnica.OK;
+    	}else {
+    		return ResultadoTecnica.OK;
+    	}
+    }
+    
+    public ResultadoTecnica h70(HelpersConnection conexion) {
+        //Uso de elementos de marco para agrupar bloques de material repetido
         //Procedimiento
-        //- Verifique cada marco y elemento iframe en el código fuente HTML o XHTML para ver la presencia de un atributo de título.
-        //- Compruebe que el atributo del título contiene texto que identifica el marco.
-        List<WebElement> frames = conexion.findElements(By.tagName("frame"));
-        List<WebElement> iframes = conexion.findElements(By.tagName("iframe"));
-        if(frames.size() != 0 || iframes.size() != 0){
-            for(WebElement frame : frames){
-                try {
-                    if(frame.getAttribute("title").equals("")) {
-                    	return ResultadoTecnica.FAIL;
+        //Si la página web utiliza marcos para organizar el contenido:
+        //- Compruebe si los bloques de contenido repetidos están organizados en marcos separados.
+        //- Compruebe que los fotogramas con contenido repetido aparezcan en la misma ubicación dentro de cada conjunto de fotogramas.
+        List<WebElement> framesets = conexion.findElements(By.tagName("frameset"));
+        if(framesets.size() != 0){
+            for(WebElement frameset : framesets){
+                List<WebElement> frames = frameset.findElements(By.tagName("frame"));
+                List<WebElement> noframes = frameset.findElements(By.tagName("noframes"));
+                List<WebElement> framesets2 = frameset.findElements(By.tagName("frameset"));
+                if(frames.size() != 0 && noframes.size() == 0 && framesets2.size() == 0){
+                    for(WebElement frame : frames){
+                        try {
+                            if(frame.getAttribute("src").equals("")) {
+                            	return ResultadoTecnica.FAIL;
+                            }
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
                     }
-                } catch (Throwable t) {
-                	return ResultadoTecnica.ERROR;
-                }
-            }
-            for(WebElement iframe : iframes){
-                try {
-                    if(iframe.getAttribute("title").equals("")) {
-                    	return ResultadoTecnica.FAIL;
+                } else if(frames.size() != 0 && noframes.size() != 0 && framesets2.size() == 0){
+                    for(WebElement frame : frames){
+                        try {
+                            if(frame.getAttribute("src").equals("")) {
+                            	return ResultadoTecnica.FAIL;
+                            }
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
                     }
-                } catch (Throwable t) {
-                	return ResultadoTecnica.ERROR;
-                }
+                    for(WebElement noframe : noframes){
+                        try {
+                           if(noframe.getAttribute("innerHTML").equals("")) {
+                        	   return ResultadoTecnica.FAIL;
+                           }
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                } else if(frames.size() != 0 && noframes.size() != 0 && framesets2.size() != 0){
+                    for(WebElement frame : frames){
+                        try {
+                            if(frame.getAttribute("src").equals("")) {
+                            	return ResultadoTecnica.FAIL;
+                            }
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                    for(WebElement noframe : noframes){
+                        try {
+                            if(noframe.getAttribute("innerHTML").equals("")) {
+                            	return ResultadoTecnica.FAIL;
+                            }
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                    for(WebElement frameset2 : framesets2){
+                        List<WebElement> frames2 = frameset2.findElements(By.xpath("//frameset/frame"));
+                        List<WebElement> noframes2 = frameset2.findElements(By.xpath("//frameset/noframes"));
+                        if(frames2.size() != 0 && noframes2.size() != 0){
+                            for(WebElement frame : frames2){
+                                try {
+                                    if(frame.getAttribute("src").equals("")) {
+                                    	return ResultadoTecnica.FAIL;
+                                    }
+                                } catch (Throwable t) {
+                                	return ResultadoTecnica.ERROR;
+                                }
+                            }
+                            for(WebElement noframe : noframes2){
+                                try {
+                                    if(noframe.getAttribute("innerHTML").equals("")) {
+                                    	return ResultadoTecnica.FAIL;
+                                    }
+                                } catch (Throwable t) {
+                                	return ResultadoTecnica.ERROR;
+                                }
+                            }
+                        } 
+                    }
+                } else if(frames.size() == 0 && noframes.size() == 0 && framesets2.size() != 0){
+                    for(WebElement frameset2 : framesets2){
+                        List<WebElement> frames2 = frameset2.findElements(By.xpath("//frameset/frame"));
+                        List<WebElement> noframes2 = frameset2.findElements(By.xpath("//frameset/noframes"));
+                        if(frames2.size() != 0 && noframes2.size() != 0){
+                            for(WebElement frame : frames2){
+                                try {
+                                    if(frame.getAttribute("src").equals("")) {
+                                    	return ResultadoTecnica.FAIL;
+                                    }
+                                } catch (Throwable t) {
+                                	return ResultadoTecnica.ERROR;
+                                }
+                            }
+                            for(WebElement noframe : noframes2){
+                                try {
+                                    if(noframe.getAttribute("innerHTML").equals("")) {
+                                    	return ResultadoTecnica.FAIL;
+                                    }
+                                } catch (Throwable t) {
+                                	return ResultadoTecnica.ERROR;
+                                }
+                            }
+                        }
+                    }
+                } 
             }
-            return ResultadoTecnica.OK; 
+            return ResultadoTecnica.OK;
         } else {
         	return ResultadoTecnica.OK;
         }
+        //Condicion necesaria pero no suficiente, la tecnica nos permite identificar si se utiliza el elemento frameset, luego localizamos las distintas posibilidades en las que podria estar diseñado, de manera correcta segun la W3C,
+        //una vez identificados los frames y los noframes, se comprueba que los noframes no esten vacios y que el frame exista, lo que no podemos comprobar es si el contenido repetido se encuentre en 2 frames distintos, para ello se necesitara la intervencion de una persona.
+        //Discutir si combiene implementar lo siguiente:
+        // for(int i=0; i<framesets.size(); i++)
+        //     for(int j=0; j<framesets.size(); j++)
+        //         if(j != i)
+        //             lista de frame, noframe a travez de frameset.get(i)
+        //             lista de frame, noframe a travez de frameset.get(j)
+        //             Realizar los assert verificando si el contenido de frame(i) es igual a frame(j)
+
     }
     
-    
+    public ResultadoTecnica h71(HelpersConnection conexion) {
+        //Proporcionar una descripción para grupos de controles de formulario utilizando elementos de leyenda y conjunto de campos
+        //Procedimiento
+        //Para grupos de controles relacionados donde las etiquetas individuales para cada control no proporcionan una descripción suficiente y se necesita una descripción adicional a nivel de grupo,
+        //- Compruebe que el grupo de elementos inputo relacionados lógicamente selectestén contenidos dentro de los fieldsetelementos.
+        //- Verifique que cada uno fieldsettenga un legendelemento que incluya una descripción para ese grupo.
+        List<WebElement> fieldsets = conexion.findElements(By.tagName("fieldset"));
+        String tipo_input[] = {"button","submit","cancel","reset","image","text","password","radio","checkbox"};
+        if(fieldsets.size() != 0){
+            for(WebElement fieldset : fieldsets){
+                WebElement legend = fieldset.findElement(By.xpath("//legend"));
+                if(legend.getAttribute("innerHTML") != ""){
+                    List<WebElement> inputs = fieldset.findElements(By.xpath("//input"));
+                    List<WebElement> selects = fieldset.findElements(By.xpath("//select"));
+                    if(inputs.size() != 0 && selects.size() == 0){
+                        for(WebElement input : inputs){
+                            for(int i=0; i<tipo_input.length; i++){
+                                if(input.getAttribute("type").equals(tipo_input[i])){
+                                    try{
+                                        if(!(input.getAttribute("type").equals(tipo_input[i]))) {
+                                        	return ResultadoTecnica.FAIL;
+                                        }
+                                        if(legend.getAttribute("innerHTML").equals("")) {
+                                        	return ResultadoTecnica.FAIL;
+                                        }
+                                    } catch(Throwable t){
+                                    	return ResultadoTecnica.ERROR;
+                                    }
+                                }
+                            }
+                        }
+                    } else if(inputs.size() == 0 && selects.size() != 0){
+                        for(WebElement select : selects){
+                            try{
+                                if(select.getAttribute("title").equals("")) {
+                                	return ResultadoTecnica.FAIL;
+                                }
+                                if(legend.getAttribute("innerHTML").equals("")) {
+                                	return ResultadoTecnica.FAIL;
+                                }
+                            } catch(Throwable t){
+                            	return ResultadoTecnica.ERROR;
+                            }
+                        }
+                    } 
+                } 
+            }
+            return ResultadoTecnica.OK;
+        } else {
+        	 return ResultadoTecnica.OK;
+        }
+        //Condicion necesaria pero no suficiente, si bien esta tecnica nos permite localizar si hay fieldset, si este emplea un legend como descripcion y si emplea inputs o selects, aun queda por confirmar que la descripcion del legend no sea suficiente
+        //como para tener que agrupar el formulario en grupos de controles y tambien falta verificar si esta bien agrupado los controles por su contenido, para ello hace falta la intervencion de una persona.
+    }
 }
