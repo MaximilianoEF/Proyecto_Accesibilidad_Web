@@ -1,5 +1,4 @@
 package ar.edu.ub.proyecto_web.model;
-
 import java.util.List;
 import org.openqa.selenium.By;
 //import org.openqa.selenium.WebDriver;
@@ -39,23 +38,22 @@ public class Tecnica {
         // Para cada a aplicación de esta técnica:
         // - Verifique que cada img elemento contenido dentro del a elemento tenga un valor nulo establecido para su alt atributo.
         // - Verifique que el a elemento contenga un img elemento que tenga un valor de alt atributo nulo o un valor que complemente el texto del enlace y describa la imagen
+    	boolean resultado = false;
     	List<WebElement> images = conexion.findElements(By.xpath("//a/img"));
         if(images.size() != 0){
             for(WebElement image : images){
                 try {
                     if(image.getAttribute("alt")!=null){
-                    	return ResultadoTecnica.OK;
-                    	
-                    }else {
-                    	return ResultadoTecnica.FAIL;
-                    }
+                    	resultado = true;                    	
+                    }else return ResultadoTecnica.FAIL;
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
         }
-//            System.out.println("No se encontraron elementos con esta condicion.");
-		return ResultadoTecnica.FAIL;
+        if(resultado == true) {
+        	return ResultadoTecnica.OK;
+        }else return ResultadoTecnica.FAIL;
     }
 
     public ResultadoTecnica h4(HelpersConnection conexion) {
@@ -63,19 +61,22 @@ public class Tecnica {
         // Procedimiento
         // Compruebe si tabindex se utiliza
         // Si tabindex se utiliza, compruebe que el orden de tabulación especificado por los tabindex atributos sigue las relaciones en el contenido.
-        List<WebElement> indexs = conexion.findElements(By.xpath("//*[@tabindex]"));
+    	boolean resultado = false;
+    	List<WebElement> indexs = conexion.findElements(By.xpath("//*[@tabindex]"));
         if(indexs.size() != 0){
             for(WebElement index : indexs){
                 try{
                 	if (index.getAttribute("tabindex").equals("")) {
                 		  return ResultadoTecnica.FAIL;
-                	}                	
+                	} else resultado = true;              	
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
-        } 
-        return ResultadoTecnica.FAIL;
+        }
+        if(resultado == true) {
+        	return ResultadoTecnica.OK;
+        }else return ResultadoTecnica.FAIL;
         //Se me ocurrio hacerlo asi porque si bien nos pide que halla una correlacion entre los valos de tabindex, estos pueden ser distintos o iguales,
         //si son iguales es posible verificar eso, pero si son distintos necesitaremos de una persona para saber si hay relacion entre dichos valores
         //por eso use un assertFalse indicando igual a vacio, porque ya nos alcanza que tenga un valor en el tabindex, sera condicion necesaria pero no suficiente
@@ -88,22 +89,25 @@ public class Tecnica {
         // Para cada area elemento en un mapa de imágenes:
         // - Compruebe que el area elemento tenga un alt atributo.
         // - Compruebe que la alternativa de texto especificada por el alt atributo tenga el mismo propósito que la parte de la imagen del mapa de imágenes a la que hace referencia el area elemento del mapa de imágenes.
-        List<WebElement> maps = conexion.findElements(By.xpath("//map/area"));
+        boolean resultado = false;
+    	List<WebElement> maps = conexion.findElements(By.xpath("//map/area"));
         if(maps.size() != 0){
             for(WebElement map : maps){
                 try {
                 	if (map.getAttribute("alt").equals("")) {
                 		return ResultadoTecnica.FAIL;	
                     	} else {
-                    	return ResultadoTecnica.OK;	
+                    	resultado = true;	
                     	}
 
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
-        } 
-        return ResultadoTecnica.FAIL;
+        }
+        if(resultado == true) {
+        	return ResultadoTecnica.OK;
+        }else return ResultadoTecnica.FAIL;
         //Condicion necesaria pero no suficiente, debido a que podemos verificar que existe algun valor en el atributo alt del area, pero
         //se necesita una persona para verificar que el texto en el atributo alt este relacionado con la referencia a la imagen.
     }
@@ -122,10 +126,10 @@ public class Tecnica {
 				}
 			} 
     		catch(Throwable t) {
-    			System.out.println(t);
+    			return ResultadoTecnica.ERROR;
     		}
-		} 
-		return ResultadoTecnica.FAIL;
+		}
+    	return ResultadoTecnica.FAIL;
         //Condicion necesaria pero no suficiente, con estos 2 asserts verificamos que el titulo de la pagina se encuentre presente,
         //que no sea nulo y que no este vacio pero para saber si describe el contenido necesitamos a una persona.
 	}
@@ -134,7 +138,8 @@ public class Tecnica {
         //Proporcionar definiciones de abreviaturas utilizando el elemento abbr
         // Procedimiento
         // - Compruebe que se proporcione una expansión o definición para cada abreviatura vía abbr.
-        List<WebElement> texts = conexion.findElements(By.xpath("//p"));
+    	boolean resultado = false;
+    	List<WebElement> texts = conexion.findElements(By.xpath("//p"));
         if(texts.size() != 0){
             for(WebElement text : texts){
                 List<WebElement> abbrs = text.findElements(By.tagName("abbr"));
@@ -143,17 +148,17 @@ public class Tecnica {
                         try { 
                             if(abbr.getAttribute("title").equals("")) {
                             	return ResultadoTecnica.FAIL;
-                            }
+                            }else resultado = true;
                         } catch(Throwable t) {
-                                System.out.println(t);
+                        	return ResultadoTecnica.ERROR;
                         }
                     }
-                } else {
-                	return ResultadoTecnica.FAIL;
-                }
+                } else return ResultadoTecnica.FAIL;
             }
         }
-        return ResultadoTecnica.FAIL;
+        if(resultado == true) {
+        	return ResultadoTecnica.OK;
+        }else return ResultadoTecnica.FAIL;
         //Condicion suficiente pero no necesaria, debido a que mediante esta tecnica podemos saber si se utilizan o no las etiquetas abbr,
         //pero no podemos verificar si se utilizan para una abreviatura, se necesita una persona.
         //Se crea una lista de elementos p, en cada p se verifica si no existen dentro de el etiquetas de abbr, si las hay
@@ -168,11 +173,12 @@ public class Tecnica {
         // - Si un img elemento es el único contenido del a elemento, verifique que su alternativa de texto describa el propósito del enlace.
         // - Si el a elemento contiene uno o más img elementos y el texto alternativo de los img elementos está vacío, verifique que el texto del enlace describa el propósito del enlace.
         // - Si el a elemento solo contiene texto, verifique que el texto describa el propósito del enlace
-        List<WebElement> links = conexion.findElements(By.tagName("a"));
+    	boolean resultado = false;
+    	List<WebElement> links = conexion.findElements(By.tagName("a"));
         if(links.size() != 0){
             for(WebElement link : links){
                 if(link.getAttribute("innerHTML") != null){
-                	return ResultadoTecnica.OK;
+                	resultado = true;
                 } else {
                     List<WebElement> imgs = link.findElements(By.tagName("img"));
                     for(WebElement img : imgs){
@@ -180,16 +186,18 @@ public class Tecnica {
                         	if(img.getAttribute("alt").equals("")) {
                         		return ResultadoTecnica.FAIL;	
                         	} else {
-                        		return ResultadoTecnica.OK;
+                        		resultado = true;
                         	}
                         } catch (Throwable t){
-                            System.out.println(t);
+                        	return ResultadoTecnica.ERROR;
                         }
                     }
                 }
             }
         }
-        return ResultadoTecnica.FAIL;
+        if(resultado == true) {
+        	return ResultadoTecnica.OK;
+        } else return ResultadoTecnica.FAIL;
         //Condicion necesaria pero no suficiente, esta tecnica nos permite verificar que cada elemento a tenga texto dentro de el, caso contrario se verifica
         //que dentro de el existan etiquetas img, y a su vez esas etiquetas deben tener un valor en el atributo alt, lo que no se puede corroborar es si el texto o el texto alternativo
         //este referenciado al tema que trata el link.
@@ -200,7 +208,7 @@ public class Tecnica {
         //Procedimiento
         // Encuentra todas los formularios en el contenido
         // Para cada formulario, verifique que tenga un botón de envío (tipo de entrada = "enviar", tipo de entrada = "imagen" o tipo de botón = "enviar")
-
+    	boolean resultado = false;
         List<WebElement> forms = conexion.findElements(By.tagName("form"));
         if(forms.size() != 0){
             for(WebElement form : forms){
@@ -209,19 +217,19 @@ public class Tecnica {
                     for(WebElement input : inputs){
                                 try {
                             	if(input.getAttribute("type").equals("submit")){
-                            		return ResultadoTecnica.OK;
+                            		resultado = true;
                             	}
                             	else {
                                     try {
                                         if (input.getAttribute("type").equals("image")) {
-                                    	return ResultadoTecnica.OK;
+                                        	resultado = true;
                                         }else return ResultadoTecnica.FAIL;
                                     } catch (Throwable t) {
-                                        System.out.println(t);
+                                    	return ResultadoTecnica.ERROR;
                                     	}
                             		}
                                 } catch (Throwable t) {
-                                System.out.println(t);
+                                	return ResultadoTecnica.ERROR;
                                 	}
                         	} 
                 } else {
@@ -230,17 +238,19 @@ public class Tecnica {
                         for(WebElement button : buttons){
                             try {
                                 if(button.getAttribute("type").equals("submit")) {
-                                	return ResultadoTecnica.OK;
+                                	resultado = true;
                                 } else return ResultadoTecnica.FAIL;
                             } catch (Throwable t) {
-                                System.out.println(t);
+                            	return ResultadoTecnica.ERROR;
                             }
                         }
                     } else return ResultadoTecnica.FAIL;
                 }
             }
         } 
-        return ResultadoTecnica.FAIL;
+        if(resultado == true) {
+        	return ResultadoTecnica.OK;
+        } else return ResultadoTecnica.FAIL;
         //En esta tecnica primero obtenemos los formularios, luego en cada uno de ellos buscamos todas las etiquetas inputs que existan, si existen verificamos que su atributo type sea
         //submit o image, si no existen inputs, buscamos si existen buttons dentro del form, de haberlo se corrobora que su atributo type sea submit, sino devuelve que no hay botones en el formulario.
     }
@@ -250,7 +260,7 @@ public class Tecnica {
         // Procedimiento
         // - Examine el código fuente en busca de elementos de anclaje.
         // - Para cada elemento de ancla que tenga un title atributo, verifique que el title atributo junto con el texto del enlace describa el propósito del enlace.
-
+    	boolean resultado = false;
         List<WebElement> links = conexion.findElements(By.xpath("//a[@href='']"));
         if(links.size() != 0){
             for(WebElement link : links){
@@ -261,14 +271,16 @@ public class Tecnica {
                     else if(link.getAttribute("innerHTML").equals("")) {
                     	return ResultadoTecnica.FAIL;
                     }
-                    else return ResultadoTecnica.OK;
+                    else resultado = true;
                 	
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
         } 
-        return ResultadoTecnica.FAIL;
+        if(resultado == true) {
+        	return ResultadoTecnica.OK;
+        } else return ResultadoTecnica.FAIL;
         //Condicion necesaria pero no suficiente, ya que esta tecnica nos permite verificar que tanto en el atributo title como en la etiqueta se proporcione un texto descriptivo,
         //sin embargo no podemos corroborar la relacion-logica de dicho texto, para eso se necesita la intervencion de una persona.
     }
@@ -287,9 +299,9 @@ public class Tecnica {
                 try {
                     if(dir.getAttribute("dir").equals("LTR")) {
                     	resultado = true;
-                    } 
+                    } else return ResultadoTecnica.FAIL; 
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
         }else if(dirDAI.size() != 0){
@@ -297,16 +309,15 @@ public class Tecnica {
                 try {
                     if(dir.getAttribute("dir").equals("RTL")) {
                     	resultado = true;
-                    } 
+                    } else return ResultadoTecnica.FAIL; 
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
         } 
         if(resultado == true) {
         	return ResultadoTecnica.OK;
-        }
-        return ResultadoTecnica.FAIL;
+        }else return ResultadoTecnica.FAIL;
         //Condicion necesaria pero no suficiente, si bien podemos identificar si hay elementos donde la direccion del texto va de izq. a der. o de der. a izq., esto
         //no nos permite corroborar si se debe aplicar este cambio de direccion por el tipo de idioma.
     }
@@ -317,7 +328,8 @@ public class Tecnica {
         // - Ver el código fuente del elemento applet
         // - Compruebe que el elemento del subprograma contiene un alt atributo con una alternativa de texto para el subprograma
         // - Compruebe que el elemento de la mini aplicación contiene una alternativa de texto para la mini aplicación en el cuerpo del elemento de la mini aplicación
-        List<WebElement> applets = conexion.findElements(By.tagName("applet"));
+    	boolean resultado = false;
+    	List<WebElement> applets = conexion.findElements(By.tagName("applet"));
         if(applets.size() != 0){
             for(WebElement applet : applets){
                 if(applet.getAttribute("alt") != null && applet.getAttribute("innerHTML") != null){
@@ -328,16 +340,18 @@ public class Tecnica {
                         else if(applet.getAttribute("innerHTML").equals("")) {
                         	return ResultadoTecnica.FAIL;
                         }
-                        else return ResultadoTecnica.OK;
+                        else resultado = true;
                     } catch (Throwable t) {
-                        System.out.println(t);
+                    	return ResultadoTecnica.ERROR;
                     }
                 } else {
                 	return ResultadoTecnica.FAIL;
                 }
             }
         } 
-        return ResultadoTecnica.FAIL;
+        if(resultado == true) {
+        	return ResultadoTecnica.OK;
+        }else return ResultadoTecnica.FAIL;
         //Condicion necesaria pero no suficiente, debido a que encontramos los elementos applets, luego verificamos si su atributo alt no esta vacio y su contenido tampoco,
         //pero no podemos asegurar que el texto alternativo describa la mini aplicacion.
     }
@@ -347,21 +361,24 @@ public class Tecnica {
         // Procedimiento
         // Para todos los input elementos que tienen un valor de atributo de tipo de "imagen", verifique la presencia de un alt atributo.
         // Compruebe que el alt atributo indique la función del botón.
-        List<WebElement> inputs = conexion.findElements(By.xpath("//input[@type='image']"));
+    	boolean resultado = false;
+    	List<WebElement> inputs = conexion.findElements(By.xpath("//input[@type='image']"));
         if(inputs.size() != 0){
             for(WebElement input : inputs){
                 if(input.getAttribute("alt") != null){
                     try {
                         if(input.getAttribute("alt").equals("")) {
                         	return ResultadoTecnica.FAIL;
-                        }
+                        }else resultado = true;
                     } catch (Throwable t) {
-                        System.out.println(t);
+                    	return ResultadoTecnica.ERROR;
                     }
                 } else return ResultadoTecnica.FAIL;
             }
         } 
-        return ResultadoTecnica.FAIL;
+        if(resultado == true) {
+        	return ResultadoTecnica.OK;
+        }else return ResultadoTecnica.FAIL;
         //Condicion necesaria pero no suficiente, la tecnica nos permite encontrar los inputs de tipo imagen, luego verifica que su atributo alt tenga un valor,
         //pero no podemos comprobar si dicho valor tiene que ver con el boton o con la imagen, se necesita la intervencion de una persona
     }
@@ -372,7 +389,8 @@ public class Tecnica {
         // Para cada tabla de datos:
         // - Compruebe que la tabla incluya un caption elemento.
         // - Compruebe que el contenido del caption elemento identifica a la tabla.
-        List<WebElement> tables = conexion.findElements(By.tagName("table"));
+    	boolean resultado = false;
+    	List<WebElement> tables = conexion.findElements(By.tagName("table"));
         if(tables.size() != 0){
             for(WebElement table : tables){
                 List<WebElement> captions = table.findElements(By.tagName("caption"));
@@ -380,14 +398,16 @@ public class Tecnica {
                     try {
                         if(caption.getAttribute("innerHTML").equals("")) {
                         	return ResultadoTecnica.FAIL;
-                        }else return ResultadoTecnica.OK;
+                        }else resultado = true;
                     } catch (Throwable t) {
-                        System.out.println(t);
+                    	return ResultadoTecnica.ERROR;
                     }
                 }
             }
         } 
-        return ResultadoTecnica.FAIL;
+        if(resultado == true) {
+        	return ResultadoTecnica.OK;
+        }else return ResultadoTecnica.FAIL;
         //Condicion necesaria pero no suficiente, porque la tecnica no nos permite comprobar que el contenido del caption identifica a la tabla,
         //solo podemos verificar que en el caption exista contenido.
     }
@@ -401,7 +421,8 @@ public class Tecnica {
         // - Compruebe que cuando hay más de un término que comparte la misma descripción, los dt elementos se suceden inmediatamente.
         // - Compruebe que la descripción de cada término esté contenida en uno o más dd elementos.
         // - Compruebe que uno o más dd elementos siguen inmediatamente al uno o más dt elementos que contienen el término que se describe.
-        List<WebElement> dls = conexion.findElements(By.tagName("dl"));
+    	boolean resultado = true;
+    	List<WebElement> dls = conexion.findElements(By.tagName("dl"));
         if(dls.size() != 0){
             for(WebElement dl : dls){
                 List<WebElement> dts = dl.findElements(By.xpath("//dt"));
@@ -411,24 +432,26 @@ public class Tecnica {
                         try {
                             if(dt.getAttribute("innerHTML").equals("")) {
                             	return ResultadoTecnica.FAIL;
-                            }
+                            } 
                         } catch (Throwable t) {
-                            System.out.println(t);
+                        	return ResultadoTecnica.ERROR;
                         }
                     }
                     for(WebElement dd : dds){
                         try {
                             if(dd.getAttribute("innerHTML").equals("")) {
                             	return ResultadoTecnica.FAIL;
-                            } else return ResultadoTecnica.OK;
+                            } else resultado = true;
                         } catch (Throwable t) {
-                            System.out.println(t);
+                        	return ResultadoTecnica.ERROR;
                         }
                     }
                 } else return ResultadoTecnica.FAIL;
             } 
-        } 
-        return ResultadoTecnica.FAIL;
+        } else return ResultadoTecnica.FAIL;
+        if(resultado == true) {
+        	return ResultadoTecnica.OK;
+        }else return ResultadoTecnica.FAIL;
         //Condicion necesaria pero no suficiente, debido a que la tecnica nos permite ubicar todas las dl, luego verificamos que existan la misma cantidad de dd elementos que de dt elementos,
         //y por ultimo se verifica que cada dd y dt elemento tengan contenido, pero es necesaria la intervencion de una persona para ver la correlacion del contenido.
     }
@@ -438,8 +461,7 @@ public class Tecnica {
         // Procedimiento
         // - Compruebe que se utiliza el marcado de encabezado cuando el contenido es un encabezado.
         // - Compruebe que el marcado de encabezado no se utilice cuando el contenido no sea un encabezado.
-    	boolean resultado = true;
-        List<WebElement> h1 = conexion.findElements(By.tagName("h1"));
+    	List<WebElement> h1 = conexion.findElements(By.tagName("h1"));
         List<WebElement> h2 = conexion.findElements(By.tagName("h2"));
         List<WebElement> h3 = conexion.findElements(By.tagName("h3"));
         List<WebElement> h4 = conexion.findElements(By.tagName("h4"));
@@ -449,62 +471,59 @@ public class Tecnica {
             for(WebElement h : h1){
                 try {
                     if(h.getAttribute("innerHTML").equals("")) {
-                    	resultado = false;
+                    	return ResultadoTecnica.FAIL;
                     }
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
             for(WebElement h : h2){
                 try {
                     if(h.getAttribute("innerHTML").equals("")) {
-                    	resultado = false;
+                    	return ResultadoTecnica.FAIL;
                     }
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
             for(WebElement h : h3){
                 try {
                     if(h.getAttribute("innerHTML").equals("")) {
-                    	resultado = false;
+                    	return ResultadoTecnica.FAIL;
                     }
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
             for(WebElement h : h4){
                 try {
                     if(h.getAttribute("innerHTML").equals("")) {
-                    	resultado = false;
+                    	return ResultadoTecnica.FAIL;
                     }
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
             for(WebElement h : h5){
                 try {
                     if(h.getAttribute("innerHTML").equals("")) {
-                    	resultado = false;
+                    	return ResultadoTecnica.FAIL;
                     }
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
             for(WebElement h : h6){
                 try {
                     if(h.getAttribute("innerHTML").equals("")) {
-                    	resultado = false;
+                    	return ResultadoTecnica.FAIL;
                     }
                 } catch (Throwable t) {
-                    System.out.println(t);
+                	return ResultadoTecnica.ERROR;
                 }
             }
-        }
-        if(resultado == true) {
-            return ResultadoTecnica.OK;
-        }
-        return ResultadoTecnica.FAIL;        
+        } 
+        return ResultadoTecnica.OK;      
         //Condicion necesaria pero no suficiente, esta tecnica nos permite identificar si la mayoria de las etiquetas para encabezados es utilizada, luego de localizar los elementos se analiza uno por uno
         //para verificar que cada elemento h tenga contenido en el, lo que no podemos asegurar es que dicho contenido tenga que ver con el contexto de la pagina, por lo tanto es necesaria la intervencion
         //de una persona.
@@ -535,7 +554,7 @@ public class Tecnica {
                                 	resultado = true;
                                 } else return ResultadoTecnica.FAIL;
                             } catch (Throwable t) {
-                                System.out.println(t);
+                            	return ResultadoTecnica.ERROR;
                             }
                         }
                     }
@@ -549,7 +568,7 @@ public class Tecnica {
                                     	resultado = true;
                                     } else return ResultadoTecnica.FAIL;
                                 } catch (Throwable t) {
-                                    System.out.println(t);
+                                	return ResultadoTecnica.ERROR;
                                 }
                             }
                         } else return ResultadoTecnica.FAIL;
@@ -563,6 +582,747 @@ public class Tecnica {
         return ResultadoTecnica.FAIL;
         //Condicion necesaria pero no suficiente, la tecnica nos permite identificar todas las tables de la pagina, en cada una de estas se analizaran las filas y sus encabezados, se los localiza y una vez esto se evalua si el id de ciertos encabezados coincidan con los headers de otros, luego se evalua si el id de los 
         //encabezados coincida parcialmente con los headers de las filas, sin embargo el primer inconveniente es que no podemos asegurar que sea una tabla de datos puesto que se necesita de la intervencion de una persona para saber si el contenido esta relacionado.
+    }
+    
+    public ResultadoTecnica h44(HelpersConnection conexion) {
+        //Usar elementos de etiqueta para asociar etiquetas de texto con controles de formulario
+        // Procedimiento
+        // Para todos los input elementos de tipo text, file o password, para todos textareas y para todos los select elementos de la página web:
+        // - Compruebe que hay un label elemento que identifica el propósito del control antes de que el input, textarea o select elemento
+        // - Compruebe que el for atributo del label elemento coincide con el ID de la input, textarea o select elemento
+        // - Compruebe que el label elemento sea visible.
+        // Para todos los input elementos de tipo checkbox o radio en la página Web:
+        // - Verifique que haya un label elemento que identifique el propósito del control después del input elemento
+        // - Compruebe que el for atributo del label elemento coincide con el id del input elemento.
+        // - Compruebe que el label elemento sea visible.
+    	boolean resultado = false;
+        List<WebElement> inputs_text = conexion.findElements(By.xpath("//input[@type='text']"));
+        List<WebElement> inputs_file = conexion.findElements(By.xpath("//input[@type='file']"));
+        List<WebElement> inputs_password = conexion.findElements(By.xpath("//input[@type='password']"));
+        List<WebElement> textareas = conexion.findElements(By.xpath("//textarea"));
+        List<WebElement> selects = conexion.findElements(By.xpath("//select"));
+        List<WebElement> checkboxs = conexion.findElements(By.xpath("//input[@type='checkbox']"));
+        List<WebElement> radios = conexion.findElements(By.xpath("//input[@type='radio']"));
+        List<WebElement> labels = conexion.findElements(By.tagName("label"));
+        if(inputs_text.size() != 0){
+            for(WebElement text : inputs_text){
+                for(WebElement label : labels){
+                        try {
+                        	if(text.getAttribute("id").equals(label.getAttribute("for"))) {
+                            	if(label.getAttribute("type")!=null) {
+                            		if(label.getAttribute("innerHTML").equals("")) {
+                            			return ResultadoTecnica.FAIL;
+                            		} else resultado = true;
+                            	}else return ResultadoTecnica.FAIL;
+                            }else return ResultadoTecnica.FAIL;            
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                }
+        } else if(inputs_file.size() != 0) {
+            for(WebElement file : inputs_file){
+                for(WebElement label : labels){
+                        try {
+                            if(file.getAttribute("id").equals(label.getAttribute("for"))) {
+                            	if(label.getAttribute("type")!=null) {
+                            		if(label.getAttribute("innerHTML").equals("")) {
+                            			return ResultadoTecnica.FAIL;
+                            		} else resultado = true;
+                            	}else return ResultadoTecnica.FAIL;
+                            }else return ResultadoTecnica.FAIL;        
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                }
+        } else if(inputs_password.size() != 0) {
+            for(WebElement password : inputs_password){
+                for(WebElement label : labels){
+                        try {
+                            if(password.getAttribute("id").equals(label.getAttribute("for"))) {
+                            	if(label.getAttribute("type")!=null) {
+                            		if(label.getAttribute("innerHTML").equals("")) {
+                            			return ResultadoTecnica.FAIL;
+                            		} else resultado = true;
+                            	}else return ResultadoTecnica.FAIL;
+                            }else return ResultadoTecnica.FAIL; 
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                }
+        } else if(textareas.size() != 0) {
+            for(WebElement textarea : textareas){
+                for(WebElement label : labels){
+                        try {
+                            if(textarea.getAttribute("id").equals(label.getAttribute("for"))) {
+                            	if(label.getAttribute("type")!=null) {
+                            		if(label.getAttribute("innerHTML").equals("")) {
+                            			return ResultadoTecnica.FAIL;
+                            		} else resultado = true;
+                            	}else return ResultadoTecnica.FAIL;
+                            }else return ResultadoTecnica.FAIL; 
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                }
+        } else if(selects.size() != 0) {
+            for(WebElement select : selects){
+                for(WebElement label : labels){                    
+                        try {
+                        	if(select.getAttribute("id").equals(label.getAttribute("for"))){
+                        		if(label.getAttribute("type")!=null) {
+                            		if(label.getAttribute("innerHTML").equals("")) {
+                            			return ResultadoTecnica.FAIL;
+                            		} else resultado = true;
+                            	}else return ResultadoTecnica.FAIL;
+                            }else return ResultadoTecnica.FAIL; 
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                }
+        } else if(radios.size() != 0) {
+            for(WebElement radio : radios){
+                for(WebElement label : labels){                    
+                        try {
+                        	if(radio.getAttribute("id").equals(label.getAttribute("for"))){
+                        		if(label.getAttribute("type")!=null) {
+                            		if(label.getAttribute("innerHTML").equals("")) {
+                            			return ResultadoTecnica.FAIL;
+                            		} else resultado = true;
+                            	}else return ResultadoTecnica.FAIL;
+                            }else return ResultadoTecnica.FAIL; 
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                }
+        } else if(checkboxs.size() != 0) {
+            for(WebElement checkbox : checkboxs){
+                for(WebElement label : labels){
+                        try {
+                        	if(checkbox.getAttribute("id").equals(label.getAttribute("for"))){
+                        		if(label.getAttribute("type")!=null) {
+                        			if(label.getAttribute("innerHTML").equals("")) {
+                        				return ResultadoTecnica.FAIL;
+                        			} else resultado = true;
+                        		}else return ResultadoTecnica.FAIL;
+                        	}else return ResultadoTecnica.FAIL; 
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                }
+        } else return ResultadoTecnica.OK;
+        if(resultado == true) {
+            return ResultadoTecnica.OK;
+        }else return ResultadoTecnica.FAIL;
+        //Condicion necesaria pero no suficiente, la tecnica realiza todas las verificaciones sin embargo hay un inconveniente el cual es saber si el contenido de las etiquetas estan relacionados con el contexto de la pagina,
+        //por lo tanto es necesaria la intervencion de una persona.
+
+    }
+    
+    public ResultadoTecnica h45(HelpersConnection conexion) {
+        //Uso de longdesc
+        //Procedimiento
+        //- Compruebe que el img elemento tenga un atributo longdesc.
+        //- Compruebe que el valor del longdesc atributo sea un URL válido de un recurso existente.
+        //- Verifique que el contenido en el destino de ese URL contenga una descripción larga que describa el contenido original que no es de texto asociado con él.
+    	boolean resultado = false;
+    	List<WebElement> images = conexion.findElements(By.xpath("//img[@longdesc]"));
+        if(images.size() != 0){
+            for(WebElement image : images){
+                try {
+                	if(image.getAttribute("longdesc") != null){
+                		if(image.getAttribute("longdesc").equals("")){
+                			return ResultadoTecnica.FAIL;
+                    	} else resultado = true;
+                    }else return ResultadoTecnica.FAIL;
+                } catch (Throwable t) {
+                	return ResultadoTecnica.ERROR;
+                }
+            }
+        } else return ResultadoTecnica.FAIL;
+        if(resultado == true) {
+            return ResultadoTecnica.OK;
+        }else return ResultadoTecnica.FAIL;
+        //Condicion necesaria pero no suficiente, la tecnica nos permite localizar los img que posean el atributo longdesc, si lo poseen se verifica que el valor del atributo no sea ni vacio ni nulo, pero 
+        //no podemos comprobar que ese valor sea una URL valida que contenga una descripcion, para ello nos hara falta la intervencion de una persona.
+
+    }
+    
+    public ResultadoTecnica h46(HelpersConnection conexion) {
+        //Uso noembed con embed
+        //Procedimiento
+        //- Compruebe si el embed elemento tiene un noembed elemento hijo
+        //- Compruebe si el embed elemento tiene un noembed elemento que le sigue inmediatamente.
+    	boolean resultado = false;
+        List<WebElement> embeds = conexion.findElements(By.xpath("//embed"));
+        if(embeds.size() != 0){
+            for(WebElement embed : embeds){
+                List<WebElement> noembeds = embed.findElements(By.tagName("noembed"));
+                if(noembeds.size() == 1) {
+                    try {
+                        if(noembeds.isEmpty()) {
+                        	return ResultadoTecnica.FAIL;
+                        } else resultado = true;
+                    } catch (Throwable t) {
+                    	return ResultadoTecnica.ERROR;
+                    }
+                } else if(noembeds.size() == 0) {
+                    List<WebElement> noembed_brother = conexion.findElements(By.xpath("//embed/following-sibling::noembed"));
+                    //De esta manera podemos obtener todos aquellas etiquetas "hermanas"
+                    if(noembed_brother.size() == 1) {
+                        try {
+                            if(noembed_brother.isEmpty()) {
+                            	return ResultadoTecnica.FAIL;
+                            } else resultado = true;
+                        } catch (Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    } else if(noembeds.size() == 0) {
+                    	resultado = true;
+                    } else return ResultadoTecnica.FAIL;
+                } else return ResultadoTecnica.FAIL;
+            }
+        } else resultado = true;
+        if(resultado == true) {
+            return ResultadoTecnica.OK;
+        }else return ResultadoTecnica.FAIL;
+    }
+    
+    public ResultadoTecnica h48(HelpersConnection conexion) {
+        //Uso de ol, ul y dl para listas o grupos de enlaces
+        // Procedimiento
+        // - Compruebe que el contenido que tiene la apariencia visual de una lista (con o sin viñetas) esté marcado como una lista desordenada.
+        // - Compruebe que el contenido que tiene la apariencia visual de una lista numerada esté marcado como una lista ordenada.
+        // - Compruebe que el contenido esté marcado como una lista de definiciones cuando los términos y sus definiciones se presenten en forma de lista.
+        List<WebElement> unorder_lists = conexion.findElements(By.tagName("ul"));
+        List<WebElement> order_lists = conexion.findElements(By.tagName("ol"));
+        List<WebElement> definition_lists = conexion.findElements(By.tagName("dl"));
+        if(unorder_lists.size() == 0 && order_lists.size() == 0 && definition_lists.size() == 0) {
+        	return ResultadoTecnica.OK;
+        }else {
+	        if(unorder_lists.size() != 0) {
+	            for(WebElement ul : unorder_lists){
+	                List<WebElement> lis = ul.findElements(By.tagName("li"));
+	                if(lis.size() != 0){
+	                    for(WebElement li : lis){
+	                        try {
+	                            if(li.getAttribute("innerHTML").equals("")) {
+	                            	return ResultadoTecnica.FAIL;
+	                            }
+	                        } catch (Throwable t) {
+	                        	return ResultadoTecnica.ERROR;
+	                        }
+	                    }
+	                } else return ResultadoTecnica.FAIL;
+	            }
+	        } 
+	        if(order_lists.size() != 0) {
+	            for(WebElement ol : order_lists){
+	                List<WebElement> lis = ol.findElements(By.tagName("li"));
+	                if(lis.size() != 0){
+	                    for(WebElement li : lis){
+	                        try {
+	                            if(li.getAttribute("innerHTML").equals("")) {
+	                            	return ResultadoTecnica.FAIL;
+	                            }
+	                        } catch (Throwable t) {
+	                        	return ResultadoTecnica.ERROR;
+	                        }
+	                    }
+	                } else return ResultadoTecnica.FAIL;
+	            }
+	        } 
+	        if(definition_lists.size() != 0) {
+	            for(WebElement dl : definition_lists){
+	                List<WebElement> dts = dl.findElements(By.tagName("dt"));
+	                List<WebElement> dds = dl.findElements(By.tagName("dd"));
+	                if(dts.size() != 0 && dds.size() != 0 && dts.size() == dds.size()){
+	                    for(int i=0; i<dts.size(); i++){
+	                        try {
+	                            if(dts.get(i).getAttribute("innerHTML").equals("") && dds.get(i).getAttribute("innerHTML").equals("")) {
+	                            	return ResultadoTecnica.FAIL;
+	                            }
+	                        } catch (Throwable t) {
+	                        	return ResultadoTecnica.ERROR;
+	                        }
+	                    }
+	                } else return ResultadoTecnica.FAIL;
+	            }
+	        }
+	        return ResultadoTecnica.OK;
+        }
+        //Condicion necesaria pero no suficiente, la tecnica nos permite identificar si existen elementos ol, ul y dl y si se encuentran correctamente desarrolladas, ademas de verificar si cada uno de los elementos posee contenido en su interior,
+        //sin embargo esta tecnica no tiene en cuenta que dependiendo el tipo de contenido, debe ir dentro de un tipo especifico de lista, por lo tanto es necesaria la intervencion de una persona.
+    }
+    
+    public ResultadoTecnica h49(HelpersConnection conexion) {
+        //Uso de marcado semántico para marcar texto especial o enfatizado
+        //Procedimiento
+        //- Examine el contenido en busca de información que se transmite a través de variaciones en la presentación del texto.
+        //- Compruebe que el marcado semántico apropiado (tal como em, strong, cite, blockquote, sub, y sup) se han utilizado para marcar el texto que la información transmite a través de variaciones en el texto.
+        List<WebElement> ems = conexion.findElements(By.tagName("em"));
+        List<WebElement> strongs = conexion.findElements(By.tagName("strong"));
+        List<WebElement> cites = conexion.findElements(By.tagName("cite"));
+        List<WebElement> blockquotes = conexion.findElements(By.tagName("blockquote"));
+        List<WebElement> subs = conexion.findElements(By.tagName("sub"));
+        List<WebElement> sups = conexion.findElements(By.tagName("sup"));
+        if(ems.size() == 0 && strongs.size() == 0 && cites.size() == 0 && blockquotes.size() == 0 && subs.size() == 0 && sups.size() == 0) {
+        	return ResultadoTecnica.OK;
+        }else { 
+	        if(ems.size() != 0) {
+	            for(WebElement em : ems){
+	                try{
+	                    if(em.getAttribute("innerHTML").equals("")) {
+	                    	return ResultadoTecnica.FAIL;
+	                    }
+	                } catch (Throwable t) {
+	                	return ResultadoTecnica.ERROR;
+	                }
+	            }
+	        }
+	        if(strongs.size() != 0) {
+	            for(WebElement strong : strongs){
+	                try{
+	                    if(strong.getAttribute("innerHTML").equals("")) {
+	                    	return ResultadoTecnica.FAIL;
+	                    }
+	                } catch (Throwable t) {
+	                    System.out.println(t);
+	                }
+	            }
+	        }
+	        if(cites.size() != 0) {
+	            for(WebElement cite : cites){
+	                try{
+	                    if(cite.getAttribute("innerHTML").equals("")) {
+	                    	return ResultadoTecnica.FAIL;
+	                    }
+	                } catch (Throwable t) {
+	                	return ResultadoTecnica.ERROR;
+	                }
+	            }
+	        }
+	        if(blockquotes.size() != 0) {
+	            for(WebElement blockquote : blockquotes){
+	                try{
+	                    if(blockquote.getAttribute("innerHTML").equals("")) {
+	                    	return ResultadoTecnica.FAIL;
+	                    }
+	                } catch (Throwable t) {
+	                	return ResultadoTecnica.ERROR;
+	                }
+	            }
+	        }
+	        if(subs.size() != 0) {
+	            for(WebElement sub : subs){
+	                try{
+	                    if(sub.getAttribute("innerHTML").equals("")) {
+	                    	return ResultadoTecnica.FAIL;
+	                    }
+	                } catch (Throwable t) {
+	                	return ResultadoTecnica.ERROR;
+	                }
+	            }
+	        }
+	        if(sups.size() != 0) {
+	            for(WebElement sup : sups){
+	                try{
+	                    if(sup.getAttribute("innerHTML").equals("")) {
+	                    	return ResultadoTecnica.FAIL;
+	                    }
+	                } catch (Throwable t) {
+	                	return ResultadoTecnica.ERROR;
+	                }
+	            }
+	        }
+	        return ResultadoTecnica.OK;
+        }        
+        //Condicion necesaria pero no suficiente, la tecnica nos permite ubicar estas etiquetas especiales y verificar si cada una de ella posee contenido, el mayor inconveniente es que la información que se transmite a través de variaciones en la presentación del texto no esta comprobada,
+        //por lo tanto nos estaria faltando la intervencion de una persona.
+    }
+    
+    public ResultadoTecnica h53(HelpersConnection conexion) {
+        //Usando el cuerpo del object elemento.
+        // Procedimiento
+        // - Compruebe que el cuerpo de cada object elemento contiene una alternativa de texto para el objeto.
+        List<WebElement> objects = conexion.findElements(By.xpath("//object"));
+        if(objects.size() != 0) {
+            for(WebElement object : objects){
+                List<WebElement> ps = object.findElements(By.tagName("p"));
+                List<WebElement> imgs = object.findElements(By.tagName("img"));
+                List<WebElement> objects1 = object.findElements(By.tagName("object"));
+                if(ps.size() != 0) {
+                    for(WebElement p : ps){
+                        try{
+                            if(p.getAttribute("innerHTML").equals("")) {
+                            	return ResultadoTecnica.FAIL;
+                            }
+                        } catch(Throwable t){
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                } else if(imgs.size() != 0) {
+                    for(WebElement img : imgs){
+                        try{
+                            if(img.getAttribute("alt").equals("")) {
+                            	return ResultadoTecnica.FAIL;
+                            }
+                        } catch(Throwable t){
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                } else if(objects1.size() != 0) {
+                    for(WebElement object1 : objects1){
+                        try{
+                            if(object1.getAttribute("innerHTML").equals("")) {
+                            	return ResultadoTecnica.FAIL;
+                            }
+                        } catch(Throwable t){
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                } else {
+                    try{
+                        if(object.getAttribute("innerHTML").equals("")) {
+                        	return ResultadoTecnica.FAIL;
+                        }
+                    } catch(Throwable t){
+                    	return ResultadoTecnica.ERROR;
+                    }
+                }
+            }
+            return ResultadoTecnica.OK;   
+        } else {
+        	return ResultadoTecnica.OK;
+        }
+    }
+    
+    public ResultadoTecnica h54(HelpersConnection conexion) {
+        //Usar el dfn elemento para identificar la instancia definitoria de una palabra
+        //Procedimiento
+        //- Identifique todas las palabras que están definidas en línea en el texto, es decir, donde la definición ocurre en una oración cerca de una ocurrencia de la palabra.
+        //- Compruebe que cada palabra que se define en línea esté contenida en un dfn elemento.
+        List<WebElement> defineds = conexion.findElements(By.xpath("//dfn"));
+        if(defineds.size() != 0) {
+            for(WebElement dfn : defineds){
+                try{
+                    if(dfn.getAttribute("innerHTML").equals("")) {
+                    	return ResultadoTecnica.FAIL;
+                    }
+                } catch(Throwable t){
+                	return ResultadoTecnica.ERROR;
+                }
+            }
+            return ResultadoTecnica.OK;
+        } else {
+        	return ResultadoTecnica.OK;
+        }
+        //Condicion necesaria pero no suficiente, en la tecnica se pueden localizar las etiquetas dfn y ver si poseen contenido, sin embargo es necesaria la intervencion 
+        //de una persona para corroborar que se emplee en el contexto de definicion de una palabra o termino.
+    }
+    
+    public ResultadoTecnica h56(HelpersConnection conexion) {
+        //Uso del dir atributo en un elemento en línea para resolver problemas con recorridos direccionales anidados
+        // Procedimiento
+        // - Examinar la dirección del texto del texto en el documento.
+        // - Si la dirección del texto es de derecha a izquierda, verifique que para el elemento ancestro que tiene un dir atributo, el atributo tenga el valor "rtl"        
+        // - Si la dirección del texto es de izquierda a derecha, verifique que no haya ningún elemento ancestro con un dir atributo, o que para el elemento ancestro que tenga un dir atributo, el atributo tenga el valor "ltr"
+        List<WebElement> cites = conexion.findElements(By.xpath("//p/cite"));
+        List<WebElement> spans = conexion.findElements(By.xpath("//p/span"));
+        if(cites.size() != 0){
+            for(WebElement cite : cites){
+            	try{
+            		if(!cite.getAttribute("dir").equals("rtl")){
+	                    return ResultadoTecnica.FAIL;
+	                } else if(!cite.getAttribute("dir").equals("ltr")){
+	                	return ResultadoTecnica.FAIL;
+	                }
+	            } catch(Throwable t){
+	            	return ResultadoTecnica.ERROR;
+                    }
+                }
+            return ResultadoTecnica.OK;
+        } else if(spans.size() != 0){
+            for(WebElement span : spans){
+	            try {	
+	                if(span.getAttribute("dir").equals("rtl")){
+	                	return ResultadoTecnica.FAIL;
+	                } else if(span.getAttribute("dir").equals("ltr")){
+	                	return ResultadoTecnica.FAIL;
+	                }
+	            } catch(Throwable t) {
+	            	return ResultadoTecnica.ERROR;
+	            }
+            }
+            return ResultadoTecnica.OK;
+        } else {
+        	return ResultadoTecnica.OK;
+        }
+        //Condicion necesaria pero no suficiente, si bien la tecnica se cumple parcialmente puesto que para que esto suceda se debe identificar que hay un idioma hebreo-indio, es decir, la precencia de un idioma de izquierda a derecha o 
+        //de derecha a izquierda, para ello se requerira la intervencion de una persona. La tecnica nos permite identificar si dentro de un parrafo se encuentra un span o un cite, y luego verifica si posee el atributo dir; hay una pequeña duda
+        //puesto que en la pagina de la W3 aparecen solo estas 2 etiquetas, pero la tecnica habla sobre los elementos de texto en linea y los elementos de linea son varios; consultar entre todos que decision tomar
+        //a, abbr, acronym, b, basefont, bdo, big, br, cite, code, dfn, em, font, i, img, input, kbd, label, q, s, samp, select, small, span, strike, strong, sub, sup, textarea, tt, u, var
+    }
+    
+    public ResultadoTecnica h57(HelpersConnection conexion) {
+        //Uso de atributos de idioma en el elemento html
+        //Examine el html elemento del documento.
+        // Compruebe que el html elemento tenga un atributo lang y/o xml:lang.
+        // Verifique que el valor del lang atributo cumpla con BCP 47: Etiquetas para la identificación de idiomas o su sucesor y refleje el idioma principal utilizado por la página web.
+        String idiomas[] = {"aa", "ab", "ae", "af", "ak", "am", "an", "ar", "as", "av", "ay", "az", "ba", "be", "bg", "bh", "bi", "bm", "bn", "bo", "br", "bs", "ca", "ce", "ch", "co", "cr", "cs", "cu", "cv", "cy", "da", "de", "dv", "dz", "ee", "el", "en", "eo", "es", "et", "eu", "fa", "ff", "fi", "fj", "fo", "fr", "fy", "ga", "gd", "gl", "gn", "gu", "gv", "ha", "he", "hi", "ho", "hr", "ht", "hu", "hy", "hz", "ia", "id", "ie", "ig", "ii", "ik", "io", "is", "it", "iu", "ja", "jv", "ka", "kg", "ki", "kj", "kk", "kl", "km", "kn", "ko", "kr", "ks", "ku", "kv", "kw", "ky", "la", "lb", "lg", "li", "ln", "lo", "lt", "lu", "lv", "mg", "mh", "mi", "mk", "ml", "mn", "mr", "ms", "mt", "my", "na", "nb", "nd", "ne", "ng", "nl", "nn", "no", "nr", "nv", "ny", "oc", "oj", "om", "or", "os", "pa", "pi", "pl", "ps", "pt", "qu", "rm", "rn", "ro", "ru", "rw", "sa", "sc", "sd", "se", "sg", "si", "sk", "sl", "sm", "sn", "so", "sq", "sr", "ss", "st", "su", "sv", "sw", "ta", "te", "tg", "th", "ti", "tk", "tl", "tn", "to", "tr", "ts", "tt", "tw", "ty", "ug", "uk", "ur", "uz", "ve", "vi", "vo", "wa", "wo", "xh", "yi", "yo", "za", "zh", "zu"};
+        WebElement html = conexion.findElement(By.tagName("html"));
+        if(html.getAttribute("lang").length() != 0){
+            for(int i=0; i<idiomas.length; i++){
+                try {
+                	if(!html.getAttribute("lang").equals(idiomas[i])) {
+                		return ResultadoTecnica.FAIL;
+                	}
+                } catch (Throwable t) {
+                	return ResultadoTecnica.ERROR;
+                }
+            }
+            return ResultadoTecnica.OK;
+        } else {
+        	return ResultadoTecnica.OK;
+        }
+        //Nota: Selenium no estaria reconociendo el atributo xml:lang en ningun tipo de etiqueta
+    }
+    
+    public ResultadoTecnica h58(HelpersConnection conexion) {
+        //Uso de atributos del lenguaje para identificar cambios en el lenguaje humano.
+        //Para cada elemento del documento:
+        //- Verifique que el lenguaje humano del contenido del elemento sea el mismo que el lenguaje heredado del elemento como se especifica en HTML 4.01, Herencia de códigos de idioma
+        //- Para cada lang atributo del documento:
+        //  - Verifique que el valor del lang atributo se ajuste a BCP 47: Etiquetas para la Identificación de Idiomas o su sucesor
+        //- Para cada atributo xml: lang en el documento:
+        //  - Verifique que el valor del xml:lang atributo se ajuste a BCP 47: Etiquetas para la Identificación de Idiomas o su sucesor
+        WebElement html = conexion.findElement(By.tagName("html"));
+        List<WebElement> langs = html.findElements(By.xpath("//*[@lang]"));
+        String idiomas[] = {"aa", "ab", "ae", "af", "ak", "am", "an", "ar", "as", "av", "ay", "az", "ba", "be", "bg", "bh", "bi", "bm", "bn", "bo", "br", "bs", "ca", "ce", "ch", "co", "cr", "cs", "cu", "cv", "cy", "da", "de", "dv", "dz", "ee", "el", "en", "eo", "es", "et", "eu", "fa", "ff", "fi", "fj", "fo", "fr", "fy", "ga", "gd", "gl", "gn", "gu", "gv", "ha", "he", "hi", "ho", "hr", "ht", "hu", "hy", "hz", "ia", "id", "ie", "ig", "ii", "ik", "io", "is", "it", "iu", "ja", "jv", "ka", "kg", "ki", "kj", "kk", "kl", "km", "kn", "ko", "kr", "ks", "ku", "kv", "kw", "ky", "la", "lb", "lg", "li", "ln", "lo", "lt", "lu", "lv", "mg", "mh", "mi", "mk", "ml", "mn", "mr", "ms", "mt", "my", "na", "nb", "nd", "ne", "ng", "nl", "nn", "no", "nr", "nv", "ny", "oc", "oj", "om", "or", "os", "pa", "pi", "pl", "ps", "pt", "qu", "rm", "rn", "ro", "ru", "rw", "sa", "sc", "sd", "se", "sg", "si", "sk", "sl", "sm", "sn", "so", "sq", "sr", "ss", "st", "su", "sv", "sw", "ta", "te", "tg", "th", "ti", "tk", "tl", "tn", "to", "tr", "ts", "tt", "tw", "ty", "ug", "uk", "ur", "uz", "ve", "vi", "vo", "wa", "wo", "xh", "yi", "yo", "za", "zh", "zu"};
+        if(langs.size() != 0){
+            for(WebElement lang : langs){
+                if(lang.getAttribute("lang").length() != 0){
+                    for(int i=0; i<idiomas.length; i++){
+                    	try {
+                    		if(!lang.getAttribute("lang").equals(idiomas[i])) {
+                            	return ResultadoTecnica.FAIL;
+                            }
+                        } catch (Throwable t) {
+                           	return ResultadoTecnica.ERROR;
+                        }
+                    }
+                }
+            }
+            return ResultadoTecnica.OK;
+        } else {
+        	return ResultadoTecnica.OK;
+        }
+        //Nota: Selenium no estaria reconociendo el atributo xml:lang en ningun tipo de etiqueta
+    }
+    
+    public ResultadoTecnica h59(HelpersConnection conexion) {
+        //Uso del elemento de enlace y las herramientas de navegación
+        //Para una página web que se encuentra dentro de una secuencia o colección de páginas web:
+        // - Compruebe que todos los link elementos relacionados con la navegación se encuentran en la head sección del documento.
+        // - Para cada link elemento de la head sección del documento que pertenece a la navegación, verifique que contenga al menos:
+        //     * un rel atributo que identifica el tipo de enlace
+        //     * un href atributo válido para localizar el recurso apropiado
+        List<WebElement> head_links = conexion.findElements(By.xpath("//head/link"));
+        if(head_links.size() != 0){
+            for(WebElement link : head_links){
+                try {
+                    if(link.getAttribute("rel").equals("")) {
+                    	return ResultadoTecnica.FAIL;
+                    }
+                    if(link.getAttribute("href").equals("")) {
+                    	return ResultadoTecnica.FAIL;
+                    }
+                } catch (Throwable t) {
+                	return ResultadoTecnica.ERROR;
+                	}
+            }
+            return ResultadoTecnica.OK;
+        } else return ResultadoTecnica.OK;
+    }
+    
+    public ResultadoTecnica h60(HelpersConnection conexion) {
+        //Para cualquier conjunto de palabras y sus definiciones que sirvan como glosario:
+        // Verifique que la head sección de la página web que contiene palabras, frases o abreviaturas definidas en un glosario contiene un link elemento
+        // Verifica que el link elemento tenga atributo rel="glossary"
+        // Compruebe que el href atributo del link elemento se refiere a la página del glosario.
+        List<WebElement> head_links = conexion.findElements(By.xpath("//head/link"));
+        if(head_links.size() != 0){
+            for(WebElement link : head_links){
+                if(link.getAttribute("rel").equals("glossary")){
+                    try {
+                        if(!link.getAttribute("rel").equals("glossary")) {
+                        	return ResultadoTecnica.FAIL;
+                        }
+                        if(link.getAttribute("href").equals("")) {
+                        	return ResultadoTecnica.FAIL;
+                        }
+                    } catch (Throwable t) {
+                    	return ResultadoTecnica.ERROR;
+                    }
+                } 
+            }
+            return ResultadoTecnica.OK;
+        } else {
+        	return ResultadoTecnica.OK;
+        }
+        //Condicion necesaria pero no suficiente, debemos verificar con una persona si se esta definiendo un glosario de manera externa, a travez de una URL, luego la tecnica
+        //realiza lo demas, en este caso intentamos localizar los elementos link dentro del head, si los hay preguntamos si alguno posee un atributo rel con valor glossary, y en ese caso 
+        //se realizan los assert.
+
+    }
+
+    public ResultadoTecnica h62(HelpersConnection conexion) {
+        //Usando el elemento rubí
+        //Procedimiento
+        //Para cada ejecución de texto donde se usa una anotación Ruby para proporcionar información de pronunciación:
+        //- Compruebe que un rtelemento contiene información de pronunciación para cada texto definido por el rbelemento.
+        //- Si se usa un marcado Ruby simple, verifique que el rpelemento esté presente para indicar a los agentes de usuario que no admiten anotaciones Ruby que el texto en el elemento rt proporciona la información de pronunciación.
+        List<WebElement> leguage = conexion.findElements(By.xpath("//*[@lang='ja'or@lang='ch']"));
+        if(leguage.size() != 0){
+            List<WebElement> rubys = conexion.findElements(By.xpath("//ruby"));
+            if(rubys.size() != 0){
+                for(WebElement ruby : rubys){
+                    WebElement rb = ruby.findElement(By.tagName("rb"));
+                    WebElement rt = ruby.findElement(By.xpath("//rb/following-sibling::rt"));
+                    if(rb != null && rt != null){
+                        try{
+                            if(rb.getAttribute("innerHTML").equals("")) {
+                            	return ResultadoTecnica.FAIL;
+                            }
+                            if(rt.getAttribute("innerHTML").equals("")) {
+                            	return ResultadoTecnica.FAIL;
+                            }
+                        } catch(Throwable t) {
+                        	return ResultadoTecnica.ERROR;
+                        }
+                    } else if(rb != null){
+                        WebElement rp = ruby.findElement(By.xpath("//rb/following-sibling::rp"));
+                        if (rp != null) {
+                            WebElement rt_child = rp.findElement(By.tagName("rt"));
+                            WebElement rt_brother = ruby.findElement(By.xpath("//rp/following-sibling::rt"));
+                            if(rt_child != null){
+                                try{
+                                    if(rb.getAttribute("innerHTML").equals("")) {
+                                    	return ResultadoTecnica.FAIL;
+                                    }
+                                    if(rt_child.getAttribute("innerHTML").equals("")) {
+                                    	return ResultadoTecnica.FAIL;
+                                    }
+                                } catch(Throwable t) {
+                                	return ResultadoTecnica.ERROR;
+                                }
+                            } else if(rt_brother != null){
+                                try{
+                                    if(rb.getAttribute("innerHTML").equals("")) {
+                                    	return ResultadoTecnica.FAIL;
+                                    }
+                                    if(rt_brother.getAttribute("innerHTML").equals("")) {
+                                    	return ResultadoTecnica.FAIL;
+                                    }
+                                } catch(Throwable t) {
+                                	return ResultadoTecnica.ERROR;
+                                }
+                            } else {
+                            	return ResultadoTecnica.FAIL;
+                            }
+                        } else {
+                        	return ResultadoTecnica.FAIL;
+                        }
+                    }
+                }
+                return ResultadoTecnica.OK;
+            } else {
+            	return ResultadoTecnica.OK;
+            }
+        } else {
+        	return ResultadoTecnica.OK;
+        }
+        //Ruby se usa comúnmente para texto en japonés y otros idiomas de Asia oriental.
+    }
+    
+    public ResultadoTecnica h63(HelpersConnection conexion) {
+        //Uso del atributo de alcance para asociar celdas de encabezado y celdas de datos en tablas de datos
+        //Procedimiento:
+        //Para cada tabla de datos:
+        //- Compruebe que todos los th elementos tengan un scope atributo.
+        //- Compruebe que todos los td elementos que actúan como encabezados de otros elementos tengan un scope atributo.
+        //- Compruebe que todos los scope atributos tienen el valor row, col, rowgroup, o colgroup.
+        List<WebElement> ths = conexion.findElements(By.tagName("th"));
+        List<WebElement> tds = conexion.findElements(By.tagName("td"));
+        String valores[] = {"row", "col", "rowgroup", "colgroup"}; 
+        if(ths.size() != 0 || tds.size() != 0) {
+	        if(ths.size() != 0){
+	            for(WebElement th : ths){
+	                for(int i=0; i<valores.length; i++){
+	                    try {
+	                        if(!th.getAttribute("scope").equals(valores[i])) {
+	                        	return ResultadoTecnica.FAIL;
+	                        }
+	                    } catch (Throwable t) {
+	                    	return ResultadoTecnica.ERROR;
+	                    }
+	                }
+	            }
+	        } if(tds.size() != 0){
+	            for(WebElement td : tds){
+	                for(int i=0; i<valores.length; i++){
+	                    try {
+	                        if(!td.getAttribute("scope").equals(valores[i])) {
+	                        	return ResultadoTecnica.FAIL;
+	                        }
+	                    } catch (Throwable t) {
+	                    	return ResultadoTecnica.ERROR;
+	                    }
+	                }
+	            }
+	        }
+	        return ResultadoTecnica.OK;
+        } else {
+        	return ResultadoTecnica.OK;
+        }
+    }
+    
+    public ResultadoTecnica h64(HelpersConnection conexion) {
+        //Uso del title atributo de los elementos frame y iframe
+        //Procedimiento
+        //- Verifique cada marco y elemento iframe en el código fuente HTML o XHTML para ver la presencia de un atributo de título.
+        //- Compruebe que el atributo del título contiene texto que identifica el marco.
+        List<WebElement> frames = conexion.findElements(By.tagName("frame"));
+        List<WebElement> iframes = conexion.findElements(By.tagName("iframe"));
+        if(frames.size() != 0 || iframes.size() != 0){
+            for(WebElement frame : frames){
+                try {
+                    if(frame.getAttribute("title").equals("")) {
+                    	return ResultadoTecnica.FAIL;
+                    }
+                } catch (Throwable t) {
+                	return ResultadoTecnica.ERROR;
+                }
+            }
+            for(WebElement iframe : iframes){
+                try {
+                    if(iframe.getAttribute("title").equals("")) {
+                    	return ResultadoTecnica.FAIL;
+                    }
+                } catch (Throwable t) {
+                	return ResultadoTecnica.ERROR;
+                }
+            }
+            return ResultadoTecnica.OK; 
+        } else {
+        	return ResultadoTecnica.OK;
+        }
     }
     
     

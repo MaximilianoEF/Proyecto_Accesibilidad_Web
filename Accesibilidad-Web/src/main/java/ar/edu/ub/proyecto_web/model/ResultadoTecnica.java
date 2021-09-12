@@ -4,6 +4,7 @@ public enum ResultadoTecnica {
 	
 	OK,
 	FAIL,
-	MANUAL
+	MANUAL,
+	ERROR
 	
 }
