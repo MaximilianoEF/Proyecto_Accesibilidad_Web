@@ -19,7 +19,7 @@ import ar.edu.ub.proyecto_web.model.Principio;
 import ar.edu.ub.proyecto_web.model.Tecnica;
 
 @RestController
-@RequestMapping("/getAnalisisAW/")
+@RequestMapping(value="/getAnalisisAW")
 public class DemoController {
 
 	private String URL;
