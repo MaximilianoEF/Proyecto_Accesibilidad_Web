@@ -44,7 +44,7 @@ public class Tecnica {
 		if(images.size() != 0){
 			for(WebElement image : images){
 				try {
-					if(image.getAttribute("alt")!=null){
+					if(image.getAttribute("alt")!=null || !image.getAttribute("alt").isEmpty()){
 						resultado = true;                    	
 					}else return ResultadoTecnica.FAIL;
 				} catch (Throwable t) {
@@ -1859,4 +1859,623 @@ public class Tecnica {
 		//Condicion necesaria pero no suficiente, la tecnica esta dise√±ada para que siga un patron de dise√±o y si se cumple verificar que se este usando el elemento optgroup, el problema es que
 		//la tecnica no verifica el conjunto de opciones dentro de una lista de selecci√≥n para ver si hay grupos de opciones relacionadas, es por esto que necesita la intervencion de una persona
 	}
+
+	public ResultadoTecnica h89(HelpersConnection conexion) {
+		// Uso del atributo de t√≠tulo para proporcionar ayuda contextual
+		// Procedimiento:
+		// - Identifique los controles de formulario que requieren entrada de texto.
+		// - Verifique que cada control de formulario tenga una etiqueta asociada expl√≠citamente
+		// - Compruebe que cada control de formulario tenga ayuda contextual proporcionada en el titleatributo.
+
+		List<WebElement> forms = conexion.findElements(By.xpath("//form"));
+		if(forms.size() != 0){
+			for(WebElement form: forms) {
+				List<WebElement> inputs = form.findElements(By.xpath("//label/following-sibling::input"));
+				if(inputs.size() != 0){
+					for(WebElement input : inputs){
+						if(input.getAttribute("title") != null){
+							try {
+								if(input.getAttribute("title").equals("")) {
+									return ResultadoTecnica.FAIL;
+								}
+							} catch (Throwable t) {
+								return ResultadoTecnica.ERROR;
+							}
+						}
+					}
+				}
+			}
+			return ResultadoTecnica.OK;  
+		} else {
+			return ResultadoTecnica.OK;
+		}
+	}
+
+	public ResultadoTecnica h90(HelpersConnection conexion) {
+		// Indicaci√≥n de los controles de formulario necesarios mediante etiqueta o leyenda
+		// Procedimiento:
+		// - Para cada control de formulario requerido, verifique que el estado requerido se indique en el control de formulario label o legend.
+		// - Para cada indicador de estado requerido que no se proporciona en el texto, verifique que el significado del indicador se explique antes del control de formulario que lo usa.
+
+		List<WebElement> forms = conexion.findElements(By.tagName("form"));
+		if(forms.size() != 0){
+			for(WebElement form: forms) {
+				List<WebElement> legends = form.findElements(By.tagName("legend"));
+				List<WebElement> labels = form.findElements(By.tagName("label"));
+				List<WebElement> inputs = form.findElements(By.xpath("//label/following-sibling::input"));
+				if(legends.size() != 0 && labels.size() != 0 && inputs.size() != 0){
+					for(WebElement legend : legends){
+						if(legend.getAttribute("innerHTML").contains("required")){
+							for(int i=0; i<labels.size(); i++){
+								for(int j=0; j<inputs.size(); j++){
+									try {
+										if(legend.getAttribute("innerHTML").equals("")) {
+											return ResultadoTecnica.FAIL;
+										}
+										if(!(labels.get(i).getAttribute("for").equals(inputs.get(j).getAttribute("id")))) {
+											return ResultadoTecnica.FAIL;
+										}
+									} catch (Throwable t) {
+										return ResultadoTecnica.ERROR;
+									}
+								}
+							}
+						}
+					}  
+				} else if(legends.size() == 0 && labels.size() != 0 && inputs.size() != 0){
+					for(WebElement label : labels){
+						if(label.getAttribute("innerHTML").contains("required")){
+							for(WebElement input : inputs){
+								if(label.getAttribute("for").equals(input.getAttribute("id"))){
+									try {
+										if(label.getAttribute("innerHTML").equals("")) {
+											return ResultadoTecnica.FAIL;
+										}
+										if(!(label.getAttribute("for").equals(input.getAttribute("id")))) {
+											return ResultadoTecnica.FAIL;
+										}
+									} catch (Throwable t) {
+										return ResultadoTecnica.ERROR;
+									}
+								}
+							}
+						}
+					}  
+				} 
+			}
+			return ResultadoTecnica.OK;
+		} else {
+			return ResultadoTecnica.OK;
+		} 
+	}
+
+	public ResultadoTecnica h91(HelpersConnection conexion) {
+		// Uso de enlaces y controles de formulario HTML
+		// Procedimiento:
+		// - Inspeccione el c√≥digo fuente HTML.
+		// - Para cada instancia de enlaces y elementos de formulario, verifique que el nombre, el valor y el estado est√©n especificados como se indica en la tabla anterior.
+		List<WebElement> links = conexion.findElements(By.xpath("//form/a"));
+		List<WebElement> links_image = conexion.findElements(By.xpath("//form/a/img"));
+		List<WebElement> buttons = conexion.findElements(By.xpath("//form/button"));
+		List<WebElement> fieldsets = conexion.findElements(By.xpath("//form/fieldset/legend"));
+		List<WebElement> inputs_button = conexion.findElements(By.xpath("//form/input[@type='button']|//form/input[@type='submit']|//form/input[@type='reset']"));
+		List<WebElement> inputs_image = conexion.findElements(By.xpath("//form/input[@type='image']"));
+		List<WebElement> inputs_text = conexion.findElements(By.xpath("//form/input[@type='text']"));
+		List<WebElement> inputs_password = conexion.findElements(By.xpath("//form/input[@type='password']"));
+		List<WebElement> inputs_file = conexion.findElements(By.xpath("//form/input[@type='file']"));
+		List<WebElement> inputs_checkbox = conexion.findElements(By.xpath("//form/input[@type='checkbox']"));
+		List<WebElement> inputs_radio = conexion.findElements(By.xpath("//form/input[@type='radio']"));
+		List<WebElement> selects = conexion.findElements(By.xpath("//form/select"));
+		List<WebElement> textareas = conexion.findElements(By.xpath("//form/textarea"));
+		if(links.size() != 0 || links_image.size() != 0 || buttons.size() != 0 || fieldsets.size() != 0 || inputs_button.size() != 0 || 
+				inputs_image.size() != 0 || inputs_text.size() != 0 || inputs_password.size() != 0 || inputs_file.size() != 0 ||
+				inputs_checkbox.size() != 0 || inputs_radio.size() != 0 || selects.size() != 0 || textareas.size() != 0) {
+			if(links.size() != 0){
+				for(WebElement link: links) {
+					try {
+						if(link.getAttribute("href").equals("")) {
+							return ResultadoTecnica.FAIL;
+						}
+						if(link.getAttribute("innerHTML")==null) {
+							return ResultadoTecnica.FAIL;
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			} 
+			if(links_image.size() != 0){
+				for(WebElement link: links_image) {
+					try {
+						if(link.getAttribute("alt").equals("")) {
+							return ResultadoTecnica.FAIL;
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			}
+			if(buttons.size() != 0){
+				for(WebElement button: buttons) {
+					try {
+						if(button.getAttribute("title") != null){
+							if(button.getAttribute("title").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						} else {
+							if(button.getAttribute("innerHTML").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			}
+			if(fieldsets.size() != 0){
+				for(WebElement fieldset: fieldsets) {
+					try {
+						if(fieldset.getAttribute("innerHTML").equals("")) {
+							return ResultadoTecnica.FAIL;
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			} 
+			if(inputs_button.size() != 0){
+				for(WebElement ibuttn: inputs_button) {
+					try {
+						if(ibuttn.getAttribute("value").equals("")) {
+							return ResultadoTecnica.FAIL;
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			} 
+			if(inputs_image.size() != 0){
+				for(WebElement iimg: inputs_image) {
+					try {
+						if(iimg.getAttribute("title") != null){
+							if(iimg.getAttribute("title").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						} else {
+							if(iimg.getAttribute("alt").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			} 
+			if(inputs_text.size() != 0){
+				for(WebElement itxt: inputs_text) {
+					try {
+						if(itxt.getAttribute("title") != null){
+							if(itxt.getAttribute("title").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						} else {
+							WebElement dad = itxt.findElement(By.xpath("//form/label[@for="+itxt.getAttribute("id")+"]"));
+							if(dad.getAttribute("innerHTML").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			} 
+			if(inputs_password.size() != 0){
+				for(WebElement ipss: inputs_password) {
+					try {
+						if(ipss.getAttribute("title") != null){
+							if(ipss.getAttribute("title").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						} else {
+							WebElement dad = ipss.findElement(By.xpath("//form/label[@for="+ipss.getAttribute("id")+"]"));
+							if(dad.getAttribute("innerHTML").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			} 
+			if(inputs_file.size() != 0){
+				for(WebElement ifile: inputs_file) {
+					try {
+						if(ifile.getAttribute("title") != null){
+							if(ifile.getAttribute("title").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						} else {
+							WebElement dad = ifile.findElement(By.xpath("//form/label[@for="+ifile.getAttribute("id")+"]"));
+							if(dad.getAttribute("innerHTML").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			} 
+			if(inputs_checkbox.size() != 0){
+				for(WebElement icheck: inputs_checkbox) {
+					try {
+						if(icheck.getAttribute("title") != null){
+							if(icheck.getAttribute("title").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						} else {
+							WebElement dad = icheck.findElement(By.xpath("//form/label[@for="+icheck.getAttribute("id")+"]"));
+							if(dad.getAttribute("innerHTML").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			} 
+			if(inputs_radio.size() != 0){
+				for(WebElement iradio: inputs_radio) {
+					try {
+						if(iradio.getAttribute("title") != null){
+							if(iradio.getAttribute("title").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						} else {
+							WebElement dad = iradio.findElement(By.xpath("//form/label[@for="+iradio.getAttribute("id")+"]"));
+							if(dad.getAttribute("innerHTML").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			} 
+			if(selects.size() != 0){
+				for(WebElement select: selects) {
+					try {
+						if(select.getAttribute("title") != null){
+							if(select.getAttribute("title").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						} else {
+							WebElement dad = select.findElement(By.xpath("//form/label[@for="+select.getAttribute("id")+"]"));
+							if(dad.getAttribute("innerHTML").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			} 
+			if(textareas.size() != 0){
+				for(WebElement textarea: textareas) {
+					try {
+						if(textarea.getAttribute("title") != null){
+							if(textarea.getAttribute("title").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						} else {
+							WebElement dad = textarea.findElement(By.xpath("//form/label[@for="+textarea.getAttribute("id")+"]"));
+							if(dad.getAttribute("innerHTML").equals("")) {
+								return ResultadoTecnica.FAIL;
+							}
+						}
+					} catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			} 
+			return ResultadoTecnica.OK;
+		} else return ResultadoTecnica.OK;   
+	}
+
+	public ResultadoTecnica h93(HelpersConnection conexion){
+		// Asegurarse de que los id atributos sean √∫nicos en una p√°gina web
+		// Procedimiento
+		// - Compruebe que todos los valores de los atributos de id sean √∫nicos en la p√°gina web.
+
+		List<WebElement> ids = conexion.findElements(By.xpath("//*[@id]"));
+		boolean unicos = false;
+		for(WebElement id : ids){
+			for(WebElement id2 : ids){
+				if(id.getAttribute("id").equals(id2.getAttribute("id"))){
+					unicos = true;
+				} else {
+					unicos = false;
+				}
+			}
+		}
+		if(unicos) {
+			return ResultadoTecnica.OK;
+		}else {
+			return ResultadoTecnica.FAIL;
+		}
+	}
+
+	public ResultadoTecnica h95(HelpersConnection conexion){
+		// Uso del elemento de seguimiento para proporcionar subt√≠tulos
+		// Procedimiento
+		// Para cada video elemento utilizado para reproducir un video:
+		// - Verifique que el video contenga un track elemento de kind subt√≠tulos en el idioma del video.
+
+		List<WebElement> videos = conexion.findElements(By.xpath("//video"));
+		if(videos.size() != 0){
+			for(WebElement video : videos){
+				WebElement track = video.findElement(By.tagName("track"));
+				try{
+					if(!(track.getAttribute("kind").equals("captions"))) {
+						return ResultadoTecnica.FAIL;
+					}
+					if(track.getAttribute("srclang").equals("")) {
+						return ResultadoTecnica.FAIL;
+					}
+				} catch(Throwable t){
+					return ResultadoTecnica.ERROR;
+				}
+			}
+			return ResultadoTecnica.OK;
+		} else {
+			return ResultadoTecnica.OK;
+		}
+	}
+
+	public ResultadoTecnica h96(HelpersConnection conexion){
+		// Uso del elemento de pista para proporcionar descripciones de audio
+		// Procedimiento
+		// Para cada video elemento utilizado para reproducir un video:
+		// - Verifique que el video contenga un track elemento de kind descripciones en el idioma del video.
+		List<WebElement> videos = conexion.findElements(By.xpath("//video"));
+		if(videos.size() != 0){
+			for(WebElement video : videos){
+				WebElement track = video.findElement(By.tagName("track"));
+				try{
+					if(!(track.getAttribute("kind").equals("descriptions"))) {
+						return ResultadoTecnica.FAIL;
+					}
+					if(track.getAttribute("srclang").equals("")) {
+						return ResultadoTecnica.FAIL;
+					}
+				} catch(Throwable t){
+					return ResultadoTecnica.ERROR;
+				}
+			}
+			return ResultadoTecnica.OK;
+		} else {
+			return ResultadoTecnica.OK;
+		}
+	}
+
+	public ResultadoTecnica h97(HelpersConnection conexion){
+		// Agrupacion de enlaces relacionados mediante el elemento de navegaci√≥n
+		// Procedimiento
+		// Compruebe que los enlaces que est√°n agrupados visualmente y representan una secci√≥n de la p√°gina est√°n incluidos en un nav elemento.
+		List<WebElement> navs = conexion.findElements(By.xpath("//nav"));
+		if(navs.size() != 0){
+			for(WebElement nav : navs){
+				if(nav.getAttribute("aria-label") != ""){
+					try{
+						if(nav.getAttribute("aria-label").equals("")) {
+							return ResultadoTecnica.FAIL;
+						}
+					} catch(Throwable t){
+						return ResultadoTecnica.ERROR;
+					}
+				} else {
+					List<WebElement> as = nav.findElements(By.tagName("a"));
+					if(as.size() >= 3){
+						for(WebElement a : as){
+							try{
+								if(a.getAttribute("href").equals("")) {
+									return ResultadoTecnica.FAIL;
+								}
+							} catch(Throwable t){
+								return ResultadoTecnica.ERROR;
+							}
+						}
+					}
+				}
+			}
+			return ResultadoTecnica.OK;
+		} else {
+			return ResultadoTecnica.OK;
+		}
+		//Condicion necesaria pero no suficiente, debido a que no podemos comprobar que los enlaces que estan agrupados visualmente y representan una seccion sean los que se encuentran dentro del nav
+	}
+
+	public ResultadoTecnica c7(HelpersConnection conexion) {
+		List <WebElement> links = conexion.findElements(By.tagName("a"));
+		if(links.size() != 0) {
+			for(WebElement link : links) {
+				List <WebElement> as = link.findElements(By.xpath("//*"));
+				if(as.size() !=0) {
+					for(WebElement a : as) {
+						if(!(a.getCssValue("display").equals("none"))) {
+							return ResultadoTecnica.FAIL;
+						} else if(!(a.getCssValue("visibility").equals("hidden"))) {
+							return ResultadoTecnica.FAIL;
+						} 
+					}    				
+				} 
+			}
+			return ResultadoTecnica.OK;
+		} else {
+			return ResultadoTecnica.OK;
+		}    	
+	}
+
+	public ResultadoTecnica c8(HelpersConnection conexion) {
+		List <WebElement> elementos = conexion.findElements(By.xpath("//*"));
+		if(elementos.size() != 0) {
+			for(WebElement elemento : elementos){
+				if(elemento.getCssValue("letter-spacing").equals("") == false) {
+					return ResultadoTecnica.FAIL;
+				} 
+			}
+			return ResultadoTecnica.OK;
+		}else return ResultadoTecnica.OK;
+	}
+
+	public ResultadoTecnica c12(HelpersConnection conexion) {
+		//https://www.w3.org/TR/WCAG20-TECHS/C12.html
+		//El objetivo de est· tecnica es que la fuente se adapate a la escala correspondiente (Responsividad).
+		//Comprobar que cada valor de la propieadad Font-Size de CSS estÈ expresado en %
+		//El metodo chequea que cada propiedad Font-Size contenga el simbolo %
+		//Que el resultado sea false no garantiza que no se haya tenido en cuenta la escala, solo que no se utilizÛ est· tecnica correctamente y no se puete utilizar para reclamar conformidad.
+
+		List<WebElement> elementos = conexion.findElements(By.xpath("//*"));
+		if (elementos.size() != 0) {
+			for(WebElement elemento : elementos) {
+				try {
+					if(!(elemento.getCssValue("font-size").contains("%"))) {
+						return ResultadoTecnica.FAIL;
+					}
+				} catch (Throwable t) {
+					return ResultadoTecnica.ERROR;
+				}
+			}
+			return ResultadoTecnica.OK;
+		}else return ResultadoTecnica.OK;
+	}
+
+	public ResultadoTecnica c13(HelpersConnection conexion) {
+		//https://www.w3.org/TR/WCAG20-TECHS/C13.html
+		//El objetivo de esta tÈcnica es especificar un tamaÒo de fuente con nombre que exprese el tamaÒo de fuente relativo deseado.
+		//Comprobar que cada valor de la propieadad Font-Size de CSS contenga al menos uno de los siguientes valores: xx-small, xx-small, x-small, small, medium, large, x-large, xx-large, xsmaller, or larger.
+		//El metodo chequea que cada propiedad Font-Size contenga al menos uno de los valores mencionados.
+		//Que el resultado sea false no garantiza que no se haya tenido en cuenta el Èxito del criterio, solo que no se utilizÛ est· tecnica y no se puede utilizar para reclamar conformidad.
+		String[] fontsizes = {"xx-small", "xx-small", "x-small", "small", "medium", "large", "x-large", "xx-large", "xsmaller", "larger"};
+		List<WebElement> elementos = conexion.findElements(By.xpath("//*"));
+		if (elementos.size() != 0) {
+			for(WebElement elemento : elementos) {    		
+				for(String fontsize : fontsizes) {
+					try {
+						if(!(elemento.getCssValue("font-size").contains(fontsize))) {
+							return ResultadoTecnica.FAIL;
+						}
+					} catch(Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			}
+			return ResultadoTecnica.OK;
+		}else return ResultadoTecnica.OK;
+	}
+
+	public ResultadoTecnica c14(HelpersConnection conexion) {
+		//https://www.w3.org/TR/WCAG20-TECHS/C14.html
+		//El objetivo de est· tecnica es que la fuente se adapate a la escala correspondiente (Responsividad).
+		//Comprobar que cada valor de la propieadad Font-Size de CSS estÈ expresado en "em"
+		//El metodo chequea que cada propiedad Font-Size contenga el simbolo "em"
+		//Que el resultado sea false no garantiza que no se haya tenido en cuenta la escala, solo que no se utilizÛ est· tecnica correctamente y no se puete utilizar para reclamar conformidad.
+
+		List<WebElement> elementos = conexion.findElements(By.xpath("//*"));
+		if (elementos.size() != 0) {
+			for(WebElement elemento : elementos) {
+				try {
+					if(!(elemento.getCssValue("font-size").contains("em"))){
+						return ResultadoTecnica.FAIL;
+					}    						
+				} catch (Throwable t) {
+					return ResultadoTecnica.ERROR;
+				}
+			}
+			return ResultadoTecnica.OK;
+		}else return ResultadoTecnica.OK;
+	}
+
+	public ResultadoTecnica c15(HelpersConnection conexion){
+		//https://www.w3.org/TR/WCAG20-TECHS/C15.html
+		//El objetivo de est· tÈcnica es proporcionar informaciÛn cuando un elemento sea interactivo utilizando CSS.
+		//Que un :hover o un tab tenga un focus
+		//No pude comprobar que elementos tiene un :hover
+		/*if (driver instanceof JavascriptExecutor) {
+    			    ((JavascriptExecutor)driver).executeScript("yourScript();");
+    			} else {
+    			    throw new IllegalStateException("This driver does not support JavaScript!");
+    			}*/
+		List<WebElement> elementos = conexion.findElements(By.xpath("//style"));
+		boolean isFocus;
+		boolean isHover;
+		if (elementos.size() != 0) {
+			for (WebElement elemento : elementos) {
+				isFocus = elemento.getAttribute("innerHTML").contains(":focus");
+				isHover = elemento.getAttribute("innerHTML").contains(":hover");
+				try {
+					if(!(isFocus && isHover)) {
+						return ResultadoTecnica.FAIL;
+					}        				
+				} catch (Throwable t) {
+					return ResultadoTecnica.ERROR;
+				}
+			} 
+			return ResultadoTecnica.OK;
+		} else {
+			return ResultadoTecnica.OK;
+		}
+	}
+	//Si no se cumple no es posible afirmar que no se este cumpliendo la tecnica, es necesaria la intervencion de una persona.
+
+	public ResultadoTecnica c17(HelpersConnection conexion) {
+		//C17: Scaling form elements which contain text
+		//Procedure
+		//Enter some text into text-based form controls that receive user entered text.
+		//Increase the text size of the content by 200%.
+		//Check that the text in text-based form controls has increased by 200%.
+		List<WebElement> elementos = conexion.findElements(By.xpath("//*"));
+		String[] values = {"px", "ex", "em"};
+		if (elementos.size() != 0) {
+			for(WebElement elemento : elementos) {
+				for(int i=0; i<values.length; i++) {
+					try {
+						if(!(elemento.getCssValue("font-size").contains(values[i]))) {
+							return ResultadoTecnica.FAIL;
+						}else if(!(elemento.getCssValue("margin").contains(values[i]))) {
+							return ResultadoTecnica.FAIL;
+						}
+					}catch (Throwable t) {
+						return ResultadoTecnica.ERROR;
+					}
+				}
+			}
+			return ResultadoTecnica.OK;
+		}else return ResultadoTecnica.OK; 
+	}
+	//Tecnica a revisar / confirmar
+	//Para desarrollar esta tecnica nos basamos en https://uniwebsidad.com/libros/css/capitulo-3/unidades-de-medida#:~:text=La%20unidad%20em%20hace%20referencia,puede%20aproximar%20por%200.5%20em%20.&text=La%20regla%20CSS%20anterior%20indica,de%20anchura%20igual%20a%201em%20.
+
+
+	public ResultadoTecnica c19(HelpersConnection conexion) {
+		/*
+    	https://www.w3.org/TR/WCAG20-TECHS/C19.html
+    	C19: Specifying alignment either to the left OR right in CSS
+    	Procedure
+		- Check that the text is aligned either left or right.
+		 */
+		List<WebElement> elementos = conexion.findElements(By.xpath("//*"));
+		boolean condition = false;
+		if (elementos.size() != 0) {
+			for(WebElement elemento : elementos) {
+				if(elemento.getCssValue("text-align").contains("left") || elemento.getCssValue("text-align").contains("right")) {
+					condition = true;
+					//HABRIA QUE A—ADIR UNA ECEPCION SI TIENE "CENTER"????
+				} else return ResultadoTecnica.FAIL; 
+			}
+		}
+		if(condition == true) {
+			return ResultadoTecnica.OK; 
+		} else return ResultadoTecnica.FAIL; 
+	}
+
 }

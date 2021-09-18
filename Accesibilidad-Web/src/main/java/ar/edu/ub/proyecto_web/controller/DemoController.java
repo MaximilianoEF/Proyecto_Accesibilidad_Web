@@ -79,6 +79,7 @@ public class DemoController {
 	@PostMapping
     public ResponseEntity<String> getUrl(@RequestBody String url) {
 		this.URL = url;
+		System.out.println("URL INGRESADA");
 		System.out.println(this.URL);
         return new ResponseEntity<>("", HttpStatus.OK);
     }
