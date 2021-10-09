@@ -27,8 +27,182 @@ public class Tecnica {
 		case "H4":
 			this.resultado = this.h4(conexion);
 			break;
+		case "H24":
+			this.resultado = this.h24(conexion);
+			break;
+		case "H25":
+			this.resultado = this.h25(conexion);
+			break;
+		case "H28":
+			this.resultado = this.h28(conexion);
+			break;
+		case "H30":
+			this.resultado = this.h30(conexion);
+			break;
+		case "H32":
+			this.resultado = this.h32(conexion);
+			break;
+		case "H33":
+			this.resultado = this.h33(conexion);
+			break;
+		case "H34":
+			this.resultado = this.h34(conexion);
+			break;
+		case "H35":
+			this.resultado = this.h35(conexion);
+			break;
+		case "H36":
+			this.resultado = this.h36(conexion);
+			break;
+		case "H39":
+			this.resultado = this.h39(conexion);
+			break;
+		case "H40":
+			this.resultado = this.h40(conexion);
+			break;
+		case "H42":
+			this.resultado = this.h42(conexion);
+			break;
+		case "H43":
+			this.resultado = this.h43(conexion);
+			break;
+		case "H44":
+			this.resultado = this.h44(conexion);
+			break;
+		case "H45":
+			this.resultado = this.h45(conexion);
+			break;
+		case "H46":
+			this.resultado = this.h46(conexion);
+			break;
+		case "H48":
+			this.resultado = this.h48(conexion);
+			break;
+		case "H49":
+			this.resultado = this.h49(conexion);
+			break;
+		case "H53":
+			this.resultado = this.h53(conexion);
+			break;
+		case "H54":
+			this.resultado = this.h54(conexion);
+			break;
+		case "H56":
+			this.resultado = this.h56(conexion);
+			break;
+		case "H57":
+			this.resultado = this.h57(conexion);
+			break;
+		case "H58":
+			this.resultado = this.h48(conexion);
+			break;
+		case "H59":
+			this.resultado = this.h59(conexion);
+			break;
+		case "H60":
+			this.resultado = this.h60(conexion);
+			break;
+		case "H62":
+			this.resultado = this.h62(conexion);
+			break;
+		case "H63":
+			this.resultado = this.h63(conexion);
+			break;
+		case "H64":
+			this.resultado = this.h64(conexion);
+			break;
+		case "H65":
+			this.resultado = this.h65(conexion);
+			break;
+		case "H67":
+			this.resultado = this.h67(conexion);
+			break;
+		case "H70":
+			this.resultado = this.h70(conexion);
+			break;
+		case "H71":
+			this.resultado = this.h71(conexion);
+			break;
+		case "H73":
+			this.resultado = this.h73(conexion);
+			break;
+		case "H76":
+			this.resultado = this.h76(conexion);
+			break;
+		case "H77":
+			this.resultado = this.h77(conexion);
+			break;
+		case "H83":
+			this.resultado = this.h83(conexion);
+			break;
+		case "H84":
+			this.resultado = this.h84(conexion);
+			break;
+		case "H85":
+			this.resultado = this.h85(conexion);
+			break;
+		case "H89":
+			this.resultado = this.h89(conexion);
+			break;
+		case "H90":
+			this.resultado = this.h90(conexion);
+			break;
+		case "H91":
+			this.resultado = this.h91(conexion);
+			break;
+		case "H93":
+			this.resultado = this.h93(conexion);
+			break;
+		case "H95":
+			this.resultado = this.h95(conexion);
+			break;
+		case "H96":
+			this.resultado = this.h96(conexion);
+			break;
+		case "H97":
+			this.resultado = this.h97(conexion);
+			break;
+		case "C7":
+			this.resultado = this.c7(conexion);
+			break;
+		case "C8":
+			this.resultado = this.c8(conexion);
+			break;
+		case "C12":
+			this.resultado = this.c12(conexion);
+			break;
+		case "C13":
+			this.resultado = this.c13(conexion);
+			break;
+		case "C14":
+			this.resultado = this.c14(conexion);
+			break;
+		case "C15":
+			this.resultado = this.c15(conexion);
+			break;
+		case "C17":
+			this.resultado = this.c17(conexion);
+			break;
+		case "C19":
+			this.resultado = this.c19(conexion);
+			break;
+		case "C20":
+			this.resultado = this.c20(conexion);
+			break;
+		case "C21":
+			this.resultado = this.c21(conexion);
+			break;
+		case "C22":
+			this.resultado = this.c22(conexion);
+			break;
+		case "C24":
+			this.resultado = this.c24(conexion);
+			break;
+		case "C28":
+			this.resultado = this.c28(conexion);
+			break;
 		default:
-			System.out.println("Maxi Gato");
+			System.out.println("Tecnica ingresada inexistente");
 			break;
 		}
 
