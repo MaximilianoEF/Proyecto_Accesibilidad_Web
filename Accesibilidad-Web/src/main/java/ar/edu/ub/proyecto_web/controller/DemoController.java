@@ -304,17 +304,92 @@ public class DemoController {
 		
 		//Agrego Criterios a Pauta 1.2
 		pa12.agregarPauta(c121);
+		pa12.agregarPauta(c122);
+		pa12.agregarPauta(c123);
+		pa12.agregarPauta(c124);
+		pa12.agregarPauta(c125);
+		
+		//Agrego Criterios a Pauta 1.3
+		pa13.agregarPauta(c131);
+		pa13.agregarPauta(c132);
+		pa13.agregarPauta(c133);
+		
+		//Agrego Criterios a Pauta 1.4
+		pa14.agregarPauta(c141);
+		pa14.agregarPauta(c142);
+		pa14.agregarPauta(c143);
+		pa14.agregarPauta(c144);
+		pa14.agregarPauta(c145);
+		
+		//Agrego Criterios a Pauta 2.1
+		pa21.agregarPauta(c211);
+		pa21.agregarPauta(c212);
+		
+		//Agrego Criterios a Pauta 2.2
+		pa22.agregarPauta(c221);
+		pa22.agregarPauta(c222);
+		
+		//Agrego Criterios a Pauta 2.3
+		pa23.agregarPauta(c231);
+		
+		//Agrego Criterios a Pauta 2.4
+		pa24.agregarPauta(c241);
+		pa24.agregarPauta(c242);
+		pa24.agregarPauta(c243);
+		pa24.agregarPauta(c244);
+		pa24.agregarPauta(c245);
+		pa24.agregarPauta(c246);
+		pa24.agregarPauta(c247);
+		
+		//Agrego Criterios a Pauta 3.1
+		pa31.agregarPauta(c311);
+		pa31.agregarPauta(c312);
+		
+		//Agrego Criterios a Pauta 3.2
+		pa32.agregarPauta(c321);
+		pa32.agregarPauta(c322);
+		pa32.agregarPauta(c323);
+		pa32.agregarPauta(c324);
+		
+		//Agrego Criterios a Pauta 3.3
+		pa33.agregarPauta(c331);
+		pa33.agregarPauta(c332);
+		pa33.agregarPauta(c333);
+		pa33.agregarPauta(c334);
+		
+		//Agrego Criterios a Pauta 4.1
+		pa41.agregarPauta(c411);
+		pa41.agregarPauta(c412);
 		
 		//Agrego Pauta a Principio 1
 		pr1.agregarPauta(pa11);
-		//Agrego Pauta a Principio 2
 		pr1.agregarPauta(pa12);
-		//Agrego Pauta a Principio 3
 		pr1.agregarPauta(pa13);
-		//Agrego Pauta a Principio 4
 		pr1.agregarPauta(pa14);
 		
-		pr1.ejecutarPautas(this.URL);
+		//Agrego Pauta a Principio 2
+		pr2.agregarPauta(pa21);
+		pr2.agregarPauta(pa22);
+		pr2.agregarPauta(pa23);
+		pr2.agregarPauta(pa24);
+		
+		//Agrego Pauta a Principio 3
+		pr3.agregarPauta(pa31);
+		pr3.agregarPauta(pa32);
+		pr3.agregarPauta(pa33);
+		
+		//Agrego Pauta a Principio 4
+		pr4.agregarPauta(pa41);
+		
+		principios.add(pr1);
+		principios.add(pr2);
+		principios.add(pr3);
+		principios.add(pr4);
+		
+		for(Principio principio: principios){
+			principio.ejecutarPautas(this.URL);
+		}
+//		pr1.ejecutarPautas(this.URL);
 		
 //		c111.ejecutarTecnicas(url);
 		
@@ -324,13 +399,11 @@ public class DemoController {
 //		c121.agregarTecnica(new Tecnica("H6", ""));
 //		c121.ejecutarTecnicas(url);
 		
-		principios.add(pr1);
+//		principios.add(pr1);
 //		principios.add(pr2);
 		
 		Gson gson = new Gson();
 		return gson.toJson(principios);
-		
-		
 	}
 	
 	@PostMapping
