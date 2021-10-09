@@ -385,22 +385,12 @@ public class DemoController {
 		principios.add(pr3);
 		principios.add(pr4);
 		
+		// Ejecución de cada una de las tecnicas
 		for(Principio principio: principios){
 			principio.ejecutarPautas(this.URL);
 		}
-//		pr1.ejecutarPautas(this.URL);
 		
-//		c111.ejecutarTecnicas(url);
-		
-//		Criterio c121 = new Criterio("1.2.1", "Foco");
-//		c121.agregarTecnica(new Tecnica("H4", ""));
-//		c121.agregarTecnica(new Tecnica("H5", ""));
-//		c121.agregarTecnica(new Tecnica("H6", ""));
-//		c121.ejecutarTecnicas(url);
-		
-//		principios.add(pr1);
-//		principios.add(pr2);
-		
+		// Output de la API
 		Gson gson = new Gson();
 		return gson.toJson(principios);
 	}
