@@ -92,7 +92,88 @@ public class DemoController {
 		
 		//Tecnicas H
 		Tecnica h2 = new Tecnica("H2", "Combinando enlaces de texto e imagenes adyacentes para e mismo recurso");
+		Tecnica h4 = new Tecnica("H4","Crear un orden de tabulación lógico a través de enlaces, controles de formulario y objetos");
 		Tecnica h24 = new Tecnica("H24", "Proporcionar alternativas de texto para los areaelementos de los mapas de imágenes");
+		Tecnica h25 = new Tecnica("H25","Proporcionar un título utilizando el elemento title");
+		Tecnica h28 = new Tecnica("H28","Proporcionar definiciones de abreviaturas utilizando el elemento abbr");
+		Tecnica h30 = new Tecnica("H30","Proporcionar texto de enlace que describa el propósito de un enlace para elementos de anclaje");
+		Tecnica h32 = new Tecnica("H32","Proporcionar botones de envío");
+		Tecnica h33 = new Tecnica("H33","Complementar el texto del enlace con el atributo de título");
+		Tecnica h34 = new Tecnica("H34","Uso de una marca Unicode de derecha a izquierda (RLM) o marca de izquierda a derecha (LRM) para mezclar la dirección del texto en línea");
+		Tecnica h35 = new Tecnica("H35","Proporcionar alternativas de texto en elementos de subprograma ");
+		Tecnica h36 = new Tecnica("H36","Uso de atributos alt en imágenes utilizadas como botones de envío");
+		Tecnica h37 = new Tecnica("H37","Uso de atributos alt en elementos ");
+		Tecnica h39 = new Tecnica("H39","Uso de elementos de título para asociar títulos de tablas de datos con tablas de datos");
+		Tecnica h40 = new Tecnica("H40","Uso de listas de descripción");
+		Tecnica h42 = new Tecnica("H42","Uso de h1-h6 para identificar encabezados");
+		Tecnica h43 = new Tecnica("H43","Uso de atributos de id y encabezados para asociar celdas de datos con celdas de encabezado en tablas de datos");
+		Tecnica h44 = new Tecnica("H44","Uso de elementos de etiqueta para asociar etiquetas de texto con controles de formulario");
+		Tecnica h45 = new Tecnica("H45","Uso de longdesc");
+		Tecnica h46 = new Tecnica("H46","Uso de noembed con incrustar");
+		Tecnica h48 = new Tecnica("H48","Uso de ol, ul y dl para listas o grupos de enlaces");
+		Tecnica h49 = new Tecnica("H49","Uso de marcado semántico para marcar texto especial o enfatizado");
+		Tecnica h51 = new Tecnica("H51","Uso de marcado de tabla para presentar información tabular");
+		Tecnica h53 = new Tecnica("H53","Usando el cuerpo del elemento de objeto");
+		Tecnica h54 = new Tecnica("H54","Usar el elemento dfn para identificar la instancia definitoria de una palabra");
+		Tecnica h56 = new Tecnica("H56","Uso del atributo dir en un elemento en línea para resolver problemas con recorridos direccionales anidados");
+		Tecnica h57 = new Tecnica("H57","Uso de atributos de idioma en el elemento html ");
+		Tecnica h58 = new Tecnica("H58","Uso de atributos del lenguaje para identificar cambios en el lenguaje humano.");
+		Tecnica h59 = new Tecnica("H59","Uso del elemento de enlace y las herramientas de navegación");
+		Tecnica h60 = new Tecnica("H60","Uso del elemento de enlace para enlazar a un glosario");
+		Tecnica h62 = new Tecnica("H62","Usando el elemento rubí");
+		Tecnica h63 = new Tecnica("H63","Uso del atributo de alcance para asociar celdas de encabezado y celdas de datos en tablas de datos");
+		Tecnica h64 = new Tecnica("H64","Uso del atributo de título del marco y los elementos del marco flotante");
+		Tecnica h65 = new Tecnica("H65","Usar el atributo de título para identificar controles de formulario cuando no se puede usar el elemento de etiqueta");
+		Tecnica h67 = new Tecnica("H67","Uso de texto alternativo nulo y sin atributo de título en elementos img para imágenes que AT debería ignorar");
+		Tecnica h69 = new Tecnica("H69","Proporcionar elementos de encabezado al principio de cada sección de contenido.");
+		Tecnica h70 = new Tecnica("H70","Uso de elementos de marco para agrupar bloques de material repetido");
+		Tecnica h71 = new Tecnica("H71","Proporcionar una descripción para grupos de controles de formulario utilizando elementos de leyenda y conjunto de campos ");
+		Tecnica h73 = new Tecnica("H73","Uso del atributo de resumen del elemento de tabla para ofrecer una descripción general de las tablas de datos");
+		Tecnica h74 = new Tecnica("H74","Asegurarse de que las etiquetas de apertura y cierre se utilicen de acuerdo con la especificación.");
+		Tecnica h75 = new Tecnica("H75","Asegurarse de que las páginas web estén bien formadas");
+		Tecnica h76 = new Tecnica("H76","Uso de meta actualización para crear una redirección instantánea del lado del cliente");
+		Tecnica h77 = new Tecnica("H77","Identificar el propósito de un enlace usando el texto del enlace combinado con su elemento de lista adjunto");
+		Tecnica h78 = new Tecnica("H78","Identificar el propósito de un enlace usando el texto del enlace combinado con su párrafo adjunto");
+		Tecnica h79 = new Tecnica("H79","Identificación del propósito de un enlace en una tabla de datos utilizando el texto del enlace combinado con la celda de la tabla adjunta y las celdas de encabezado de la tabla asociadas");
+		Tecnica h80 = new Tecnica("H80","Identificar el propósito de un enlace utilizando el texto del enlace combinado con el elemento de encabezado anterior");
+		Tecnica h81 = new Tecnica("H80","Identificar el propósito de un enlace en una lista anidada usando el texto del enlace combinado con el elemento de la lista principal bajo el cual se anida la lista");
+		Tecnica h83 = new Tecnica("H83","Usar el atributo de destino para abrir una nueva ventana a solicitud del usuario e indicarlo en el texto del enlace");
+		Tecnica h84 = new Tecnica("H84","Usar un botón con un elemento de selección para realizar una acción");
+		Tecnica h85 = new Tecnica("H85","Uso de OPTGROUP para agrupar elementos OPTION dentro de un SELECT");
+		Tecnica h86 = new Tecnica("H86","Proporcionar alternativas de texto para arte ASCII, emoticonos y leetspeak");
+		Tecnica h88 = new Tecnica("H88","Uso de HTML de acuerdo con las especificaciones");
+		Tecnica h89 = new Tecnica("H89","Uso del atributo title para proporcionar ayuda contextual");
+		Tecnica h90 = new Tecnica("H90","Indicación de los controles de formulario requeridos mediante etiqueta o leyenda");
+		Tecnica h91 = new Tecnica("H91","Uso de enlaces y controles de formulario HTML");
+		Tecnica h93 = new Tecnica("H93","Asegurarse de que los atributos de identificación sean únicos en una página web");
+		Tecnica h94 = new Tecnica("H94","Asegurarse de que los elementos no contengan atributos duplicados");
+		Tecnica h95 = new Tecnica("H95","Uso del elemento de seguimiento para proporcionar subtítulos");
+		Tecnica h96 = new Tecnica("H96","Uso del elemento de pista para proporcionar descripciones de audio");
+		Tecnica h97 = new Tecnica("H97","Agrupación de enlaces relacionados mediante el elemento de navegación");
+		
+		//Tecnicas C
+		Tecnica c06 = new Tecnica("C06","Posicionamiento de contenido basado en marcado estructural");
+		Tecnica c07 = new Tecnica("C07","Usar CSS para ocultar una parte del texto del enlace");
+		Tecnica c08 = new Tecnica("C08","Uso del espaciado entre letras CSS para controlar el espaciado dentro de una palabra");
+		Tecnica c09 = new Tecnica("C09","Usar CSS para incluir imágenes decorativas");
+		Tecnica c12 = new Tecnica("C12","Usar porcentaje para tamaños de fuente");
+		Tecnica c13 = new Tecnica("C13","Uso de tamaños de fuente con nombre");
+		Tecnica c14 = new Tecnica("C14","Uso de unidades em para tamaños de fuente");
+		Tecnica c15 = new Tecnica("C15","Usar CSS para cambiar la presentación de un componente de la interfaz de usuario cuando recibe el foco");
+		Tecnica c17 = new Tecnica("C17","Escalar elementos de formulario que contienen texto");
+		Tecnica c18 = new Tecnica("C18","Uso de reglas de margen y relleno de CSS en lugar de imágenes espaciadoras para el diseño de la disposición");
+		Tecnica c19 = new Tecnica("C19","Especificación de la alineación a la izquierda O a la derecha en CSS");
+		Tecnica c20 = new Tecnica("C20","Uso de medidas relativas para establecer anchos de columna de modo que las líneas puedan promediar 80 caracteres o menos cuando se cambia el tamaño del navegador");
+		Tecnica c21 = new Tecnica("C21","Especificar el espaciado de línea en CSS");
+		Tecnica c22 = new Tecnica("C22","Uso de CSS para controlar la presentación visual de texto");
+		Tecnica c23 = new Tecnica("C23","Especificar el texto y los colores de fondo del contenido secundario, como los banners, las funciones y la navegación en CSS, sin especificar el texto y los colores de fondo del contenido principal");
+		Tecnica c24 = new Tecnica("C24","Uso de valores porcentuales en CSS para tamaños de contenedor");
+		Tecnica c25 = new Tecnica("C25","Especificar bordes y diseño en CSS para delinear áreas de una página web sin especificar texto y colores de fondo de texto");
+		Tecnica c27 = new Tecnica("C27","Hacer que el orden DOM coincida con el orden visual");
+		Tecnica c28 = new Tecnica("C28","Especificación del tamaño de los contenedores de texto mediante unidades em");
+		Tecnica c29 = new Tecnica("C29","Uso de un conmutador de estilo para proporcionar una versión alternativa conforme");
+		Tecnica c30 = new Tecnica("C30","Usar CSS para reemplazar texto con imágenes de texto y proporcionar controles de interfaz de usuario para cambiar");
+		
 		
 		//Agrego Tecnica a Criterio 1.1.1
 		c111.agregarTecnica(h2);
