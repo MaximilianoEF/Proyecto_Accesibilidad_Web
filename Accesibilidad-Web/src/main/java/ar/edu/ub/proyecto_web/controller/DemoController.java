@@ -348,7 +348,6 @@ public class DemoController {
 		//Agrego Criterios a Pauta 3.2
 		pa32.agregarPauta(c321);
 		pa32.agregarPauta(c322);
-		pa32.agregarPauta(c323);
 		pa32.agregarPauta(c324);
 		
 		//Agrego Criterios a Pauta 3.3
