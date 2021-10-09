@@ -1,5 +1,6 @@
 package ar.edu.ub.proyecto_web.model;
 
+
 import java.util.List;
 import org.openqa.selenium.By;
 //import org.openqa.selenium.WebDriver;
@@ -2478,4 +2479,179 @@ public class Tecnica {
 		} else return ResultadoTecnica.FAIL; 
 	}
 
+	public ResultadoTecnica c20(HelpersConnection conexion) {
+		/*
+	    	 https://www.w3.org/TR/WCAG20-TECHS/C20.html
+	    	 C20: Uso de medidas relativas para establecer anchos de columna de modo que las líneas puedan promediar 80 caracteres o menos cuando se cambia el tamaño del navegador
+	    	 Procedimiento
+			 - Pruebe para ver que las columnas están definidas en unidades relativas.
+			 - Compruebe que la longitud de la línea se puede establecer en 80 caracteres o menos cambiando el tamaño de la ventana del navegador.*/
+		List<WebElement> elementos = conexion.findElements(By.xpath("//*/p | //p"));
+		if(elementos.size() != 0) {
+			for(WebElement elemento : elementos) {
+				if(elemento.getCssValue("column-width").contains("px")) {
+					String[] parts = elemento.getCssValue("column-width").split("p");
+					Integer value = Integer.parseInt(parts[0]);
+					if(value >= 140) {
+						try {
+							if(!(elemento.getCssValue("column-width").contains("px"))) return ResultadoTecnica.FAIL; 	            				
+						} catch (Throwable t) {
+							return ResultadoTecnica.ERROR;
+						}
+					}
+				} else if(elemento.getCssValue("column-width").contains("ex")) {
+					String[] parts = elemento.getCssValue("column-width").split("e");
+					Integer value = Integer.parseInt(parts[0]);
+					if(value >= 20) {
+						try {
+							if(!(elemento.getCssValue("column-width").contains("ex"))) return ResultadoTecnica.FAIL; 
+						} catch (Throwable t) {
+							return ResultadoTecnica.ERROR;
+						}
+					}
+				} else if(elemento.getCssValue("column-width").contains("em")) {
+					String[] parts = elemento.getCssValue("column-width").split("e");
+					Integer value = Integer.parseInt(parts[0]);
+					if(value >= 10) {
+						try {
+							if(!(elemento.getCssValue("column-width").contains("em"))) return ResultadoTecnica.FAIL; 
+						} catch (Throwable t) {
+							return ResultadoTecnica.ERROR;
+						}
+					}
+				} else return ResultadoTecnica.OK;
+			}
+		}
+		return ResultadoTecnica.OK;
+	}
+
+	public ResultadoTecnica c21(HelpersConnection conexion) {
+		/*
+    	 https://www.w3.org/TR/WCAG20-TECHS/C21.html
+    	 C21: Especificar el espaciado de línea en CSS
+    	 Procedimiento
+		 - Abra contenido en un navegador.
+		 - Compruebe que el espacio entre líneas en bloques de texto esté entre 1,5 y 2.*/
+		List<WebElement> elementos = conexion.findElements(By.xpath("//*/p | //p"));
+		if (elementos.size() != 0) {
+			for(WebElement elemento : elementos) {
+				if(elemento.getCssValue("line-height").contains("px")) {
+					String[] parts = elemento.getCssValue("line-height").split("p");
+					Integer value = Integer.parseInt(parts[0]);
+					if(value >=24 || value <=32) {
+						try {
+							if(!(elemento.getCssValue("line-height").contains("px"))) return ResultadoTecnica.FAIL; 
+						} catch (Throwable t) {
+							return ResultadoTecnica.ERROR;
+						}
+					} else {
+						return ResultadoTecnica.FAIL; 
+					}
+				} else {
+					return ResultadoTecnica.FAIL; 
+				}
+			}
+			return ResultadoTecnica.OK;
+		}
+		return ResultadoTecnica.OK;
+	}
+	
+	public ResultadoTecnica c22(HelpersConnection conexion) {
+    	/*
+    	 https://www.w3.org/TR/WCAG20-TECHS/C22.html
+    	 C22: Uso de CSS para controlar la presentación visual de texto
+    	 Las siguientes propiedades de CSS son útiles para diseñar texto y evitar la necesidad de texto en imágenes:
+		 - La font-family propiedad se utiliza para mostrar el aspecto del código en una familia de fuentes monoespaciada.
+		 - La text-align propiedad se utiliza para mostrar el texto a la derecha de la ventana gráfica.
+		 - La font-size propiedad se utiliza para mostrar el texto en un tamaño mayor.
+		 - La font-style propiedad se utiliza para mostrar texto en cursiva.
+		 - La font-weight propiedad se utiliza para establecer cómo se deben mostrar los caracteres delgados o gruesos en el texto.
+		 - La color propiedad se utiliza para mostrar el color de texto o contenedores de texto.
+		 - La line-height propiedad se utiliza para mostrar la altura de la línea de un bloque de texto.
+		 - La text-transform propiedad se usa para controlar el caso de las letras en el texto.
+		 - La letter-spacing propiedad se utiliza para controlar el espaciado de las letras en el texto.
+		 - La background-image propiedad se puede utilizar para mostrar texto sobre un fondo que no sea texto.
+		 - La first-line pseudoclase se puede utilizar para modificar la presentación de la primera línea en un bloque de texto.
+		 - La :first-letter pseudoclase se puede utilizar para modificar la presentación de la primera letra en un bloque de texto.
+		 - Las pseudoclases :beforey :after se pueden utilizar para insertar contenido decorativo que no sea texto antes o después de los bloques de texto.
+    	 */
+    	List<WebElement> elementos = conexion.findElements(By.xpath("//*/p | //*/h1 | //h1 | "
+    			+ "//*/h2 | //h2 | //*/h3 | //h3 | //*/h4 | //h4 | //*/h5 | //h5 | //*/h6 | "
+    			+ "//h6 | //p | //*/strong | //strong | //*/em | //em | //*/mark | //mark | "
+    			+ "//*/i | //i | //*/b | //b | //*/u | //u | //*/s | //s |  //*/span | //span | "
+    			+ "//*/cite | //cite | //*/div | //div | //*/code | //code"));
+    	String[] property = {"font-family", "text-align", "font-size", "font-style", "font-weight",
+    			"color", "line-height", "text-transform", "letter-spacing", "background-image"};
+    	boolean[] complete = new boolean[property.length];
+    	if(elementos.size() != 0) {
+    		for(WebElement elemento : elementos) {
+    			for(int i=0; i<property.length; i++) {
+    				if(elemento.getCssValue(property[i]).contains("monospace") || elemento.getCssValue("line-height").contains("right") || elemento.getCssValue("line-height").contains("em") || elemento.getCssValue("line-height").contains("italic") || elemento.getCssValue("line-height").contains("url") || elemento.getCssValue("line-height").isBlank() == false) {
+    					complete[i] = true;
+    				} 
+    			}
+    		}
+    		try {
+				if(complete.length == 10) return ResultadoTecnica.OK;
+				else return ResultadoTecnica.FAIL; 
+			} catch (Throwable t) {
+				return ResultadoTecnica.ERROR;
+			}
+    	}
+    	return ResultadoTecnica.OK;
+    }
+	
+	public ResultadoTecnica c24(HelpersConnection conexion) {
+    	/*
+    	 https://www.w3.org/TR/WCAG20-TECHS/C23.html
+    	 C24: uso de valores porcentuales en CSS para tamaños de contenedor
+    	 Procedimiento:
+		 - Verifique que todos los anchos de los contenedores estén especificados como valores porcentuales.
+		 - Aumente el tamaño del texto al 200%.
+		 - Verifique para asegurarse de que no se requiera el desplazamiento horizontal para leer ninguna línea de texto.
+		 - Compruebe que todo el texto todavía esté visible en la página.*/
+    	List<WebElement> elementos = conexion.findElements(By.xpath("//div | //*/div | //span | //*/span"));
+    	if(elementos.size() != 0) {
+    		for(WebElement elemento : elementos) {
+    			try {
+    				if(!(elemento.getCssValue("width").contains("px"))) return ResultadoTecnica.FAIL;
+    			} catch (Throwable t) {
+    				return ResultadoTecnica.ERROR;
+    			}
+    		}
+    		return ResultadoTecnica.OK;
+    	}
+    	return ResultadoTecnica.OK;
+    }
+    //Tecnica necesaria pero no sufiente, ya que para comprobar el punto 2, 3 y 4 es necesaria otra herramienta
+	
+	 public ResultadoTecnica c28(HelpersConnection conexion) {
+	    	/*
+	    	 C28: Especificación del tamaño de los contenedores de texto mediante unidades em
+	    	 Procedimiento
+			 - Identifica contenedores que contienen texto o permiten la entrada de texto.
+			 - Verifique que el ancho y / o alto del contenedor estén especificados en emunidades.*/
+	    	List<WebElement> elementos = conexion.findElements(By.xpath("//*"));
+	    	if (elementos.size() != 0) {
+	    		for(WebElement elemento : elementos) {
+	    			if(elemento.getCssValue("width").contains("em")) {
+	    				try {
+	        				if(!(elemento.getCssValue("width").contains("em"))) return ResultadoTecnica.FAIL;
+	        			} catch (Throwable t) {
+	        				return ResultadoTecnica.ERROR;
+	        			}
+	    			} else if(elemento.getCssValue("height").contains("em")) {
+	    				try {
+	        				if(!(elemento.getCssValue("height").contains("em"))) return ResultadoTecnica.FAIL;
+	        			} catch (Throwable t) {
+	        				return ResultadoTecnica.ERROR;
+	        			}
+	    			}
+	    		}
+	    		return ResultadoTecnica.OK;
+	    	}
+	    	return ResultadoTecnica.OK;
+	    }
+	 
+	 
 }
