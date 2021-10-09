@@ -92,10 +92,11 @@ public class DemoController {
 		
 		//Tecnicas H
 		Tecnica h2 = new Tecnica("H2", "Combinando enlaces de texto e imagenes adyacentes para e mismo recurso");
+		Tecnica h24 = new Tecnica("H24", "Proporcionar alternativas de texto para los areaelementos de los mapas de imágenes");
 		
 		//Agrego Tecnica a Criterio 1.1.1
-		c111.agregarTecnica(new Tecnica("H2", "Jirafa"));
-		c121.agregarTecnica(new Tecnica("H4", "Elefante"));
+		c111.agregarTecnica(h2);
+		c111.agregarTecnica(h24);
 		
 		//Agrego Criterios a Pauta 1.1
 		pa11.agregarPauta(c111);
