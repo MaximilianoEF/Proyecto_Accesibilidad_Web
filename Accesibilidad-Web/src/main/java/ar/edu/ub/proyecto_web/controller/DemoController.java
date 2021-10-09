@@ -178,6 +178,126 @@ public class DemoController {
 		//Agrego Tecnica a Criterio 1.1.1
 		c111.agregarTecnica(h2);
 		c111.agregarTecnica(h24);
+		c111.agregarTecnica(h35);
+		c111.agregarTecnica(h37);
+		c111.agregarTecnica(h53);
+		c111.agregarTecnica(h86);
+		c111.agregarTecnica(h45);
+		c111.agregarTecnica(h30);
+		c111.agregarTecnica(h36);
+		c111.agregarTecnica(h44);
+		c111.agregarTecnica(h65);
+		c111.agregarTecnica(h67);
+		c111.agregarTecnica(c09);
+		c111.agregarTecnica(c18);
+		
+		//Agrego Tecnica a Criterio 1.2.1
+		c121.agregarTecnica(h96);
+		
+		//Agrego Tecnica a Criterio 1.2.2
+		c122.agregarTecnica(h95);
+		
+		//Agrego Tecnica a Criterio 1.2.3
+		c123.agregarTecnica(h53);
+		c123.agregarTecnica(h96);
+		
+		//Agrego Tecnica a Criterio 1.3.1
+		c131.agregarTecnica(h49);
+		c131.agregarTecnica(h51);
+		c131.agregarTecnica(h39);
+		c131.agregarTecnica(h73);
+		c131.agregarTecnica(h63);
+		c131.agregarTecnica(h43);
+		c131.agregarTecnica(h44);
+		c131.agregarTecnica(h65);
+		c131.agregarTecnica(h71);
+		c131.agregarTecnica(h85);
+		c131.agregarTecnica(h48);
+		c131.agregarTecnica(h42);
+		c131.agregarTecnica(h97);
+		c131.agregarTecnica(c22);
+		
+		//Agrego Tecnica a Criterio 1.3.2
+		c132.agregarTecnica(h34);
+		c132.agregarTecnica(h56);
+		c132.agregarTecnica(c06);
+		c132.agregarTecnica(c08);
+		c132.agregarTecnica(c27);
+		
+		//Agrego Tecnica a Criterio 1.3.3
+		//Sin tecnicas H o C
+		
+		//Agrego Tecnica a Criterio 1.4.1
+		c141.agregarTecnica(c15);
+		
+		//Agrego Tecnica a Criterio 1.4.2
+		//Sin tecnicas H o C
+		
+		//Agrego Tecnica a Criterio 2.1.1
+		c211.agregarTecnica(h91);
+		
+		//Agrego Tecnica a Criterio 2.1.2
+		//Agrego Tecnica a Criterio 2.2.1
+		//Agrego Tecnica a Criterio 2.2.2
+		//Agrego Tecnica a Criterio 2.3.1
+		//Sin tecnicas H o C
+		
+		//Agrego Tecnica a Criterio 2.4.1
+		c241.agregarTecnica(h69);
+		c241.agregarTecnica(h70);
+		c241.agregarTecnica(h64);
+		c241.agregarTecnica(c06);
+		
+		//Agrego Tecnica a Criterio 2.4.2
+		c242.agregarTecnica(h25);
+		
+		//Agrego Tecnica a Criterio 2.4.3
+		c243.agregarTecnica(h4);
+		c243.agregarTecnica(c27);
+		
+		//Agrego Tecnica a Criterio 2.4.4
+		c244.agregarTecnica(h30);
+		c244.agregarTecnica(h33);
+		c244.agregarTecnica(h77);
+		c244.agregarTecnica(h78);
+		c244.agregarTecnica(h79);
+		c244.agregarTecnica(h81);
+		c244.agregarTecnica(c07);
+		c244.agregarTecnica(h2);
+		c244.agregarTecnica(h80);
+		
+		//Agrego Tecnica a Criterio 3.1.1
+		c311.agregarTecnica(h57);
+		
+		//Agrego Tecnica a Criterio 3.2.1
+		//Sin tecnicas H o C
+		
+		//Agrego Tecnica a Criterio 3.2.2
+		c322.agregarTecnica(h32);
+		c322.agregarTecnica(h84);
+		
+		//Agrego Tecnica a Criterio 3.3.1
+		//Sin tecnicas H o C
+		
+		//Agrego Tecnica a Criterio 3.3.2
+		c332.agregarTecnica(h90);
+		c332.agregarTecnica(h44);
+		c332.agregarTecnica(h71);	
+		c332.agregarTecnica(h65);
+		
+		//Agrego Tecnica a Criterio 4.1.1
+		c411.agregarTecnica(h88);
+		c411.agregarTecnica(h74);
+		c411.agregarTecnica(h93);
+		c411.agregarTecnica(h94);
+		c411.agregarTecnica(h75);
+		
+		//Agrego Tecnica a Criterio 4.1.2
+		c412.agregarTecnica(h91);
+		c412.agregarTecnica(h44);
+		c412.agregarTecnica(h64);
+		c412.agregarTecnica(h65);
+		c412.agregarTecnica(h88);
 		
 		//Agrego Criterios a Pauta 1.1
 		pa11.agregarPauta(c111);
