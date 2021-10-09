@@ -29,12 +29,16 @@ public class DemoController {
 		LinkedList<Principio> principios = new LinkedList<Principio>();
 		
 		Principio pr1 = new Principio("1", "Perceptibilidad");
+		Principio pr2 = new Principio("1", "Operabilidad");
+		Principio pr3 = new Principio("1", "Comprensibilidad");
+		Principio pr4 = new Principio("1", "Robustez");
 		Pauta pa11 = new Pauta("1.1", "Alternativas Textuales");
 		Pauta pa12 = new Pauta("1.2", "Contenido Multimedia dependiente del tiempo");
 		Pauta pa13 = new Pauta("1.3", "Adaptabilidad");
 		Pauta pa14 = new Pauta("1.4", "Distinguible");
 		Criterio c111 = new Criterio("1.1.1", "Contenido no textual");
 		Criterio c121 = new Criterio("1.2.1", "Solo audio y solo video");
+		
 //		Criterio c113 = new Criterio("1.3.1", "Contenido no textual");
 //		Criterio c11N = new Criterio("1.1.N", "Contenido no textual");
 		
