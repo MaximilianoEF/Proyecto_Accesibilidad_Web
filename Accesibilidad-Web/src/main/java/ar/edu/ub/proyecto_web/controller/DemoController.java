@@ -30,9 +30,10 @@ public class DemoController {
 		
 		// Principios
 		Principio pr1 = new Principio("1", "Perceptibilidad");
-		Principio pr2 = new Principio("1", "Operabilidad");
-		Principio pr3 = new Principio("1", "Comprensibilidad");
-		Principio pr4 = new Principio("1", "Robustez");
+		Principio pr2 = new Principio("2", "Operabilidad");
+		Principio pr3 = new Principio("3", "Comprensibilidad");
+		Principio pr4 = new Principio("4", "Robustez");
+		Principio pr5 = new Principio("5", this.URL);
 		
 		// Pautas 1.x
 		Pauta pa11 = new Pauta("1.1", "Alternativas Textuales");
@@ -384,6 +385,7 @@ public class DemoController {
 		principios.add(pr2);
 		principios.add(pr3);
 		principios.add(pr4);
+		principios.add(pr5);
 		
 		// Ejecución de cada una de las tecnicas
 		for(Principio principio: principios){

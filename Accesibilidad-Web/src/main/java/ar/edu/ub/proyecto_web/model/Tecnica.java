@@ -202,10 +202,14 @@ public class Tecnica {
 			this.resultado = this.c28(conexion);
 			break;
 		default:
-			System.out.println("Tecnica ingresada inexistente");
+			this.resultado = this.manual();
 			break;
 		}
 
+	}
+	
+	public ResultadoTecnica manual() {
+		return ResultadoTecnica.MANUAL;
 	}
 
 	public ResultadoTecnica h2(HelpersConnection conexion) {	
