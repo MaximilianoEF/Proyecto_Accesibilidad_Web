@@ -83,6 +83,7 @@ public class DemoController {
 		Criterio c312 = new Criterio("3.1.2", "Idioma de partes");
 		Criterio c321 = new Criterio("3.2.1", "Con foco");
 		Criterio c322 = new Criterio("3.2.2", "Con entrada y datos");
+		Criterio c323 = new Criterio("3.2.3", "Navegaci�n consistente");
 		Criterio c324 = new Criterio("3.2.4", "Identificación consistente");
 		Criterio c331 = new Criterio("3.3.1", "Identificación de errores");
 		Criterio c332 = new Criterio("3.3.2", "Instrucciones o etiquetas");
@@ -277,6 +278,9 @@ public class DemoController {
 		c322.agregarTecnica(h32);
 		c322.agregarTecnica(h84);
 		
+		//Agrego Tecnica a Criterio 3.2.3
+		//Sin tecnicas H o C
+		
 		//Agrego Tecnica a Criterio 3.3.1
 		//Sin tecnicas H o C
 		
@@ -349,6 +353,7 @@ public class DemoController {
 		//Agrego Criterios a Pauta 3.2
 		pa32.agregarPauta(c321);
 		pa32.agregarPauta(c322);
+		pa32.agregarPauta(c323);
 		pa32.agregarPauta(c324);
 		
 		//Agrego Criterios a Pauta 3.3
